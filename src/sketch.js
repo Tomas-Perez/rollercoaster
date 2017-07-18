@@ -111,7 +111,7 @@ var render = Render.create({
     engine: engine,
     options: {
         width: 800,
-        height: 600
+        height: 800
     }
 });
 
@@ -124,7 +124,7 @@ Runner.run(runner, engine);
 // add bodies
 var terrain;
 
-$.get('./svg/terrain.svg').done(function(data) {
+$.get('./svg/ramp.svg').done(function(data) {
     var vertexSets = [];
 
     $(data).find('path').each(function(i, path) {
