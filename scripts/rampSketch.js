@@ -8,7 +8,8 @@ var Engine = Matter.Engine,
     World = Matter.World,
     Query = Matter.Query,
     Svg = Matter.Svg,
-    Bodies = Matter.Bodies;
+    Bodies = Matter.Bodies,
+    Body = Matter.Body;
 
 // create engine
 var engine = Engine.create(),
@@ -19,8 +20,8 @@ var render = Render.create({
     element: document.body,
     engine: engine,
     options: {
-        width: 800,
-        height: 800
+        width: 1024,
+        height: 768
     }
 });
 
@@ -33,14 +34,14 @@ Runner.run(runner, engine);
 // add bodies
 var terrain;
 
-$.get('./svg/ramp.svg').done(function(data) {
+$.get('./svg/simple-ramp.svg').done(function(data) {
     var vertexSets = [];
 
     $(data).find('path').each(function(i, path) {
         vertexSets.push(Svg.pathToVertices(path, 30));
     });
 
-    terrain = Bodies.fromVertices(400, 350, vertexSets, {
+    terrain = Bodies.fromVertices(0, 768, vertexSets, {
         isStatic: true,
         render: {
             fillStyle: '#2e2b44',
@@ -49,19 +50,13 @@ $.get('./svg/ramp.svg').done(function(data) {
         }
     }, true);
 
+    Body.setPosition(terrain, {
+        x: -terrain.bounds.min.x,
+        y: -terrain.bounds.min.y + 768
+    });
+
     World.add(world, terrain);
 
-    var bodyOptions = {
-        frictionAir: 0,
-        friction: 0.0001,
-        restitution: 0.6
-    };
-
-    World.add(world, Composites.stack(80, 100, 20, 20, 10, 10, function(x, y) {
-        if (Query.point([terrain], { x: x, y: y }).length === 0) {
-            return Bodies.polygon(x, y, 5, 12, bodyOptions);
-        }
-    }));
 });
 
 // add mouse control
