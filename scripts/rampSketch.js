@@ -15,13 +15,15 @@ var Engine = Matter.Engine,
 var engine = Engine.create(),
     world = engine.world;
 
+let canvasHeight = 768;
+let canvasWidth = 1024;
 // create renderer
 var render = Render.create({
     element: document.body,
     engine: engine,
     options: {
-        width: 1024,
-        height: 768
+        width: canvasWidth,
+        height: canvasHeight
     }
 });
 
@@ -34,14 +36,14 @@ Runner.run(runner, engine);
 // add bodies
 var terrain;
 
-$.get('./svg/simple-ramp.svg').done(function(data) {
+$.get('./svg/ramp.svg').done(function(data) {
     var vertexSets = [];
 
     $(data).find('path').each(function(i, path) {
         vertexSets.push(Svg.pathToVertices(path, 30));
     });
 
-    terrain = Bodies.fromVertices(0, 768, vertexSets, {
+    terrain = Bodies.fromVertices(0, 0, vertexSets, {
         isStatic: true,
         render: {
             fillStyle: '#2e2b44',
@@ -50,9 +52,11 @@ $.get('./svg/simple-ramp.svg').done(function(data) {
         }
     }, true);
 
+    let terrainHeight = terrain.bounds.max.y - terrain.bounds.min.y;
+
     Body.setPosition(terrain, {
         x: -terrain.bounds.min.x,
-        y: -terrain.bounds.min.y + 768
+        y: -terrain.bounds.min.y + canvasHeight - terrainHeight
     });
 
     World.add(world, terrain);
