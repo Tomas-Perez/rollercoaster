@@ -1,4 +1,5 @@
-var Engine = Matter.Engine,
+
+const Engine = Matter.Engine,
     Render = Matter.Render,
     Runner = Matter.Runner,
     Composites = Matter.Composites,
@@ -12,32 +13,33 @@ var Engine = Matter.Engine,
     Body = Matter.Body;
 
 // create engine
-var engine = Engine.create(),
+const engine = Engine.create(),
     world = engine.world;
 
-let canvasHeight = 768;
-let canvasWidth = 1024;
+const canvasHeight = 768;
+const canvasWidth = 1024;
 // create renderer
-var render = Render.create({
+const render = Render.create({
     element: document.body,
     engine: engine,
     options: {
         width: canvasWidth,
-        height: canvasHeight
+        height: canvasHeight,
+        showVelocity: true
     }
 });
 
 Render.run(render);
 
 // create runner
-var runner = Runner.create();
+const runner = Runner.create();
 Runner.run(runner, engine);
 
 // add bodies
-var terrain;
+let terrain;
 
 $.get('./svg/ramp.svg').done(function(data) {
-    var vertexSets = [];
+    const vertexSets = [];
 
     $(data).find('path').each(function(i, path) {
         vertexSets.push(Svg.pathToVertices(path, 30));
@@ -49,10 +51,11 @@ $.get('./svg/ramp.svg').done(function(data) {
             fillStyle: '#2e2b44',
             strokeStyle: '#2e2b44',
             lineWidth: 1
-        }
+        },
+        friction: 0
     }, true);
 
-    let terrainHeight = terrain.bounds.max.y - terrain.bounds.min.y;
+    const terrainHeight = terrain.bounds.max.y - terrain.bounds.min.y;
 
     Body.setPosition(terrain, {
         x: -terrain.bounds.min.x,
@@ -63,8 +66,12 @@ $.get('./svg/ramp.svg').done(function(data) {
 
 });
 
+const cart1 = cart(30, 0, 150, 30, 30);
+
+World.add(world, cart1);
+
 // add mouse control
-var mouse = Mouse.create(render.canvas),
+const mouse = Mouse.create(render.canvas),
     mouseConstraint = MouseConstraint.create(engine, {
         mouse: mouse,
         constraint: {
