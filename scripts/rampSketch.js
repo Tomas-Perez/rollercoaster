@@ -10,7 +10,8 @@ const Engine = Matter.Engine,
     Query = Matter.Query,
     Svg = Matter.Svg,
     Bodies = Matter.Bodies,
-    Body = Matter.Body;
+    Body = Matter.Body,
+    Events = Matter.Events;
 
 // create engine
 const engine = Engine.create(),
@@ -25,7 +26,8 @@ const render = Render.create({
     options: {
         width: canvasWidth,
         height: canvasHeight,
-        showVelocity: true
+        showVelocity: true,
+        showCollisions: true
     }
 });
 
@@ -38,7 +40,7 @@ Runner.run(runner, engine);
 // add bodies
 let terrain;
 
-$.get('./svg/ramp.svg').done(function(data) {
+$.get('./svg/ramp.svg').done(data => {
     const vertexSets = [];
 
     $(data).find('path').each(function(i, path) {
@@ -52,11 +54,13 @@ $.get('./svg/ramp.svg').done(function(data) {
             strokeStyle: '#2e2b44',
             lineWidth: 1
         },
-        friction: 0
+        friction: 0,
+        frictionStatic: 0
     }, true);
 
     const terrainHeight = terrain.bounds.max.y - terrain.bounds.min.y;
 
+    //Position the terrain on the bottom left
     Body.setPosition(terrain, {
         x: -terrain.bounds.min.x,
         y: -terrain.bounds.min.y + canvasHeight - terrainHeight
@@ -70,6 +74,8 @@ const cart1 = cart(30, 0, 150, 30, 30);
 
 World.add(world, cart1);
 
+//World.add(world, Bodies.rectangle(800, 600, 200, 200, {isStatic: true}));
+
 // add mouse control
 const mouse = Mouse.create(render.canvas),
     mouseConstraint = MouseConstraint.create(engine, {
@@ -81,6 +87,23 @@ const mouse = Mouse.create(render.canvas),
             }
         }
     });
+
+//change the velocity of a body when it collides
+Events.on(engine, 'collisionActive', function(event) {
+    let pairs = event.pairs;
+    pairs.forEach(pair => {
+        if(pair.isActive && pair.activeContacts.length > 0){
+            const collisionVector = getCollisionVector(pair);
+            if(pair.bodyA.isStatic){
+                Body.setVelocity(pair.bodyB, vectorProjectionOnU(Matter.Vector.perp(collisionVector), pair.bodyB.velocity));
+            }
+            else {
+                Body.setVelocity(pair.bodyA, vectorProjectionOnU(Matter.Vector.perp(collisionVector), pair.bodyA.velocity));
+            }
+
+        }
+    });
+});
 
 World.add(world, mouseConstraint);
 

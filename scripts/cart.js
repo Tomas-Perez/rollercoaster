@@ -14,7 +14,7 @@ const cart = function(xx, yy, width, height, wheelSize) {
         wheelBOffset = width * 0.5 - wheelBase,
         wheelYOffset = 0;
 
-    const car = composite.create({label: 'Cart'}),
+    const cart = composite.create({label: 'Cart'}),
         body = Bodies.rectangle(xx, yy, width, height, {
             collisionFilter: {
                 group: group
@@ -59,11 +59,11 @@ const cart = function(xx, yy, width, height, wheelSize) {
         length: 0
     });
 
-    composite.addBody(car, body);
-    composite.addBody(car, wheelA);
-    composite.addBody(car, wheelB);
-    composite.addConstraint(car, axelA);
-    composite.addConstraint(car, axelB);
+    composite.addBody(cart, body);
+    composite.addBody(cart, wheelA);
+    composite.addBody(cart, wheelB);
+    composite.addConstraint(cart, axelA);
+    composite.addConstraint(cart, axelB);
 
-    return car;
+    return cart;
 };
