@@ -2,6 +2,8 @@
  * @author Tomas Perez Molina
  */
 
+const distanceTolerance = 10;
+
 const RailGuide = function(body, railVertices, acceleration){
     this.body = body;
     this.railVertices = railVertices;
@@ -13,29 +15,27 @@ const RailGuide = function(body, railVertices, acceleration){
 };
 
 RailGuide.prototype.update = function() {
-    if(vectorAlmostEq(this.railVertices[this.target], this.body.position)) {
-
+    let distance = dist(this.railVertices[this.target].x, this.railVertices[this.target].y, this.body.position.x, this.body.position.y);
+    if(distance < distanceTolerance) {
+        this.chooseTarget();
+        this.body.acceleration = vectorProjectionOnU(this.getTargetVector(), this.acceleration);
+        let magnitude = this.body.velocity.mag();
+        let angle = this.getTargetVector().heading();
+        this.body.velocity = p5.Vector.fromAngle(angle);
+        this.body.velocity.setMag(magnitude);
     }
-    this.chooseTarget();
-    this.body.acceleration = vectorProjectionOnU(this.getTargetVector(), this.acceleration);
-    let magnitude = this.body.velocity.mag();
-    let angle = this.getTargetVector().heading();
-    this.body.velocity = p5.Vector.fromAngle(angle);
-    this.body.velocity.setMag(magnitude);
-    /*
-    this.body.velocity = vectorProjectionOnU(this.getTargetVector(), this.body.velocity);
-    this.body.velocity.setMag(magnitude);
-    */
     this.body.update();
 };
 
 RailGuide.prototype.chooseTarget = function(){
-    if(this.target === this.railVertices.length) this.direction = -1;
+    if(this.target === this.railVertices.length - 1) this.direction = -1;
     else if(this.target === 0) this.direction = 1;
-    else{
+    else {
         let previousTarget = this.railVertices[this.target - this.direction];
         let previousTargetVector = p5.Vector.sub(previousTarget, this.body.position);
-        if(sameVectorDirection(previousTargetVector, this.body.velocity)) this.direction *= -1;
+        if(sameVectorDirection(previousTargetVector, this.body.velocity)){
+            this.direction *= -1;
+        }
     }
     this.target += this.direction;
 };
