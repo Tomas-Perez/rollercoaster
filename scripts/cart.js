@@ -4,18 +4,21 @@
 
 "use strict";
 
-const composite = Matter.Composite,
-    constraint = Matter.Constraint;
+const Composite = Matter.Composite,
+    Constraint = Matter.Constraint;
 
-const cart = function(xx, yy, width, height, wheelSize) {
+const Cart = function (xx, yy, width, height, wheelSize) {
+
     const group = Body.nextGroup(true),
         wheelBase = 20,
         wheelAOffset = -width * 0.5 + wheelBase,
         wheelBOffset = width * 0.5 - wheelBase,
         wheelYOffset = 0;
 
-    const cart = composite.create({label: 'Cart'}),
-        body = Bodies.rectangle(xx, yy, width, height, {
+    this.composite = Composite.create({label: 'Cart'});
+
+    const body = Bodies.rectangle(xx, yy, width, height,
+        {
             collisionFilter: {
                 group: group
             },
@@ -23,9 +26,11 @@ const cart = function(xx, yy, width, height, wheelSize) {
             frictionAir: 0,
             friction: 0,
             frictionStatic: 0
-        });
+        }
+    );
 
-    const wheelA = Bodies.circle(xx + wheelAOffset, yy + wheelYOffset, wheelSize, {
+    this.wheelA = Bodies.circle(xx + wheelAOffset, yy + wheelYOffset, wheelSize, {
+        id: 'wheelA',
         collisionFilter: {
             group: group
         },
@@ -34,7 +39,9 @@ const cart = function(xx, yy, width, height, wheelSize) {
         frictionStatic: 0
     });
 
-    const wheelB = Bodies.circle(xx + wheelBOffset, yy + wheelYOffset, wheelSize, {
+
+    this.wheelB = Bodies.circle(xx + wheelBOffset, yy + wheelYOffset, wheelSize, {
+        id: 'wheelB',
         collisionFilter: {
             group: group
         },
@@ -43,27 +50,29 @@ const cart = function(xx, yy, width, height, wheelSize) {
         frictionStatic: 0
     });
 
-    const axelA = constraint.create({
+    const axelA = Constraint.create({
         bodyB: body,
         pointB: { x: wheelAOffset, y: wheelYOffset },
-        bodyA: wheelA,
+        bodyA: this.wheelA,
         stiffness: 1,
-        length: 0
+        length: 0,
+        friction: 0,
+        frictionAir: 0
     });
 
-    const axelB = constraint.create({
+    const axelB = Constraint.create({
         bodyB: body,
         pointB: { x: wheelBOffset, y: wheelYOffset },
-        bodyA: wheelB,
+        bodyA: this.wheelB,
         stiffness: 1,
-        length: 0
+        length: 0,
+        friction: 0,
+        frictionAir: 0
     });
 
-    composite.addBody(cart, body);
-    composite.addBody(cart, wheelA);
-    composite.addBody(cart, wheelB);
-    composite.addConstraint(cart, axelA);
-    composite.addConstraint(cart, axelB);
-
-    return cart;
+    Composite.addBody(this.composite, body);
+    Composite.addBody(this.composite, this.wheelA);
+    Composite.addBody(this.composite, this.wheelB);
+    Composite.addConstraint(this.composite, axelA);
+    Composite.addConstraint(this.composite, axelB);
 };

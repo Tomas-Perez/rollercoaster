@@ -29,10 +29,10 @@ const getCollisionVector = function(pair) {
     };
 };
 
-const vectorProjectionOnU = function(u, v){
+
+
+const angleBetweenVectors = function (u, v) {
     const numerator = Matter.Vector.dot(u, v);
-    const denominator = Matter.Vector.dot(u, u);
-    return Matter.Vector.mult(u, numerator / denominator);
+    const denominator = vector.angleBetween()
+
 };
-
-

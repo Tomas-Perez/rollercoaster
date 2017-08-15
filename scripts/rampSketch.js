@@ -2,12 +2,9 @@
 const Engine = Matter.Engine,
     Render = Matter.Render,
     Runner = Matter.Runner,
-    Composites = Matter.Composites,
-    Common = Matter.Common,
     MouseConstraint = Matter.MouseConstraint,
     Mouse = Matter.Mouse,
     World = Matter.World,
-    Query = Matter.Query,
     Svg = Matter.Svg,
     Bodies = Matter.Bodies,
     Body = Matter.Body,
@@ -70,9 +67,9 @@ $.get('./svg/ramp.svg').done(data => {
 
 });
 
-const cart1 = cart(30, 0, 150, 30, 30);
+const cart = new Cart(30, 0, 150, 30, 30);
 
-World.add(world, cart1);
+World.add(world, cart.composite);
 
 //World.add(world, Bodies.rectangle(800, 600, 200, 200, {isStatic: true}));
 
@@ -88,21 +85,27 @@ const mouse = Mouse.create(render.canvas),
         }
     });
 
+let wheelABondingForce = {x: 0, y: 0};
+let wheelBBondingForce = {x: 0, y: 0};
+
 //change the velocity of a body when it collides
 Events.on(engine, 'collisionActive', function(event) {
     let pairs = event.pairs;
     pairs.forEach(pair => {
         if(pair.isActive && pair.activeContacts.length > 0){
             const collisionVector = getCollisionVector(pair);
-            if(pair.bodyA.isStatic){
-                Body.setVelocity(pair.bodyB, vectorProjectionOnU(Matter.Vector.perp(collisionVector), pair.bodyB.velocity));
-            }
-            else {
-                Body.setVelocity(pair.bodyA, vectorProjectionOnU(Matter.Vector.perp(collisionVector), pair.bodyA.velocity));
-            }
-
+            const body = pair.bodyA.isStatic ? pair.bodyB : pair.bodyA;
+            if(body === cart.wheelA) wheelABondingForce = Matter.Vector.neg(Matter.Vector.perp(vectorProjectionOnU(collisionVector, body.force)));
+            else if (body === cart.wheelB) wheelBBondingForce = Matter.Vector.neg(Matter.Vector.perp(vectorProjectionOnU(collisionVector, body.force)));
         }
     });
+});
+
+Events.on(engine, 'beforeUpdate', function(event){
+    Body.applyForce(cart.wheelA, cart.wheelA.position, wheelABondingForce);
+    Body.applyForce(cart.wheelB, cart.wheelB.position, wheelBBondingForce);
+    console.log(cart.wheelA.force);
+    console.log(cart.wheelB.force);
 });
 
 World.add(world, mouseConstraint);
