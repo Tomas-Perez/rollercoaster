@@ -1,8 +1,8 @@
 let terrainVertices = [];
-let gravity = new p5.Vector(0, 0.1);
 let cart, railGuide, energy;
 const mass = 50;
 const springConst = 0;
+const gravity = 1;
 
 function setup(){
     createCanvas(1024, 768);
@@ -16,14 +16,15 @@ function setup(){
 
     cart = new Body(new p5.Vector(0,0), mass);
     const cartHeight = height - cart.position.y;
-    energy = new Energy(mass, gravity.y, springConst, cartHeight, 0, 0);
-    railGuide = new RailGuide(cart, terrainVertices, gravity);
-
+    energy = new Energy(mass, gravity, springConst, cartHeight, 0, 0);
+    railGuide = new RailGuide(cart, terrainVertices, 0);
+    cart.velocity = new p5.Vector(0.1, 0.1);
 }
 
 function draw(){
-    background(255);
-    stroke(0);
+    background(0);
+    stroke(255);
+    noFill();
     beginShape();
     for (let i = 0; i < terrainVertices.length; i++) {
         vertex(terrainVertices[i].x, terrainVertices[i].y);
@@ -32,6 +33,8 @@ function draw(){
 
     energy.updateVelocity(height - cart.position.y,0);
     cart.velocity.setMag(energy.velocity);
+    console.log(cart.acceleration);
+    console.log(cart.velocity);
     railGuide.update();
     cart.display();
 }

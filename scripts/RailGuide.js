@@ -18,19 +18,19 @@ RailGuide.prototype.update = function() {
     let distance = dist(this.railVertices[this.target].x, this.railVertices[this.target].y, this.body.position.x, this.body.position.y);
     if(distance < distanceTolerance) {
         this.chooseTarget();
-        this.body.acceleration = vectorProjectionOnU(this.getTargetVector(), this.acceleration);
-        let magnitude = this.body.velocity.mag();
-        let angle = this.getTargetVector().heading();
-        this.body.velocity = p5.Vector.fromAngle(angle);
-        this.body.velocity.setMag(magnitude);
     }
+    //this.body.acceleration = vectorProjectionOnU(this.getTargetVector(), this.acceleration);
+    let magnitude = this.body.velocity.mag();
+    let angle = this.getTargetVector().heading();
+    this.body.velocity = p5.Vector.fromAngle(angle);
+    this.body.velocity.setMag(magnitude);
     this.body.update();
 };
 
 RailGuide.prototype.chooseTarget = function(){
     if(this.target === this.railVertices.length - 1) this.direction = -1;
     else if(this.target === 0) this.direction = 1;
-    else {
+    else if(this.body.velocity.mag() < 1){
         let previousTarget = this.railVertices[this.target - this.direction];
         let previousTargetVector = p5.Vector.sub(previousTarget, this.body.position);
         if(sameVectorDirection(previousTargetVector, this.body.velocity)){
