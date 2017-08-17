@@ -25,6 +25,12 @@ RailGuide.prototype.update = function() {
     let angle = this.getTargetVector().heading();
     this.body.velocity = p5.Vector.fromAngle(angle);
     this.body.velocity.setMag(magnitude);
+    push();
+    stroke(0, 255, 0);
+    fill(0, 255, 0);
+    ellipse(this.railVertices[this.target].x, this.railVertices[this.target].y, 5);
+    line(this.body.position.x, this.body.position.y, this.railVertices[this.target].x, this.railVertices[this.target].y);
+    pop();
     this.body.update();
 };
 
@@ -48,6 +54,9 @@ RailGuide.prototype.chooseTarget = function(){
             const currentTargetDistance = this.railVertices[this.target].dist(this.body.position);
             const nextTargetDistance = this.railVertices[i].dist(this.body.position);
             if(currentTargetDistance < nextTargetDistance) break;
+            else if(currentTargetDistance === nextTargetDistance){
+
+            }
             else {
                 this.target = i;
                 console.log('changing the target');
