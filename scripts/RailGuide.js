@@ -15,11 +15,12 @@ const RailGuide = function(body, railVertices, acceleration){
 };
 
 RailGuide.prototype.update = function() {
-    let distance = dist(this.railVertices[this.target].x, this.railVertices[this.target].y, this.body.position.x, this.body.position.y);
-    if(distance < distanceTolerance) {
-        this.chooseTarget();
-    }
-    //this.body.acceleration = vectorProjectionOnU(this.getTargetVector(), this.acceleration);
+    this.chooseTarget();
+    this.body.acceleration = vectorProjectionOnU(this.getTargetVector(), this.acceleration);
+    push();
+    fill(0, 255, 0);
+    ellipse(this.railVertices[this.target].x, this.railVertices[this.target].y, 5);
+    pop();
     let magnitude = this.body.velocity.mag();
     let angle = this.getTargetVector().heading();
     this.body.velocity = p5.Vector.fromAngle(angle);
@@ -28,16 +29,31 @@ RailGuide.prototype.update = function() {
 };
 
 RailGuide.prototype.chooseTarget = function(){
-    if(this.target === this.railVertices.length - 1) this.direction = -1;
-    else if(this.target === 0) this.direction = 1;
-    else if(this.body.velocity.mag() < 1){
-        let previousTarget = this.railVertices[this.target - this.direction];
-        let previousTargetVector = p5.Vector.sub(previousTarget, this.body.position);
-        if(sameVectorDirection(previousTargetVector, this.body.velocity)){
-            this.direction *= -1;
+    let distance = this.railVertices[this.target].dist(this.body.position);
+    if(distance < distanceTolerance) {
+        if (this.target === this.railVertices.length - 1) this.direction = -1;
+        else if (this.target === 0) this.direction = 1;
+        else if (this.body.velocity.mag() < 1) {
+            let previousTarget = this.railVertices[this.target - this.direction];
+            let previousTargetVector = p5.Vector.sub(previousTarget, this.body.position);
+            if (sameVectorDirection(previousTargetVector, this.body.velocity)) {
+                this.direction *= -1;
+            }
+        }
+        this.target += this.direction;
+    }
+    else if(!sameVectorDirection(this.body.velocity, this.getTargetVector())){
+        console.log('foring');
+        for(let i = this.target + this.direction; i < this.railVertices.length && i >= 0; i += this.direction){
+            const currentTargetDistance = this.railVertices[this.target].dist(this.body.position);
+            const nextTargetDistance = this.railVertices[i].dist(this.body.position);
+            if(currentTargetDistance < nextTargetDistance) break;
+            else {
+                this.target = i;
+                console.log('changing the target');
+            }
         }
     }
-    this.target += this.direction;
 };
 
 RailGuide.prototype.getTargetVector = function(){

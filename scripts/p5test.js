@@ -1,18 +1,22 @@
-let terrainVertices = [];
+const terrainVertices = [];
 let cart, railGuide, energy;
 const mass = 50;
 const springConst = 0;
-const gravity = 1;
+const gravity = 10/36;
 
 function setup(){
     createCanvas(1024, 768);
-    const pathResolution = 50;
+    const pathResolution = 25;
 
-    let path_str = 'M0 0 Q0 700 200 700 H500 Q1024 700 1024 0';
-    for (var c = 0; c < Raphael.getTotalLength(path_str); c += pathResolution) {
-        let point = Raphael.getPointAtLength(path_str, c);
+    let cartPath = 'M0 0 Q0 700 200 700 H500 Q1024 700 1024 0';
+
+    let cartPathLength = Raphael.getTotalLength(cartPath);
+    for (let c = 0; c < cartPathLength; c += pathResolution) {
+        let point = Raphael.getPointAtLength(cartPath, c);
         terrainVertices.push(new p5.Vector(point.x, point.y));
     }
+    let lastCartPathPoint = Raphael.getPointAtLength(cartPath, cartPathLength - 1);
+    terrainVertices.push(new p5.Vector(lastCartPathPoint.x, lastCartPathPoint.y));
 
     cart = new Body(new p5.Vector(0,0), mass);
     const cartHeight = height - cart.position.y;
@@ -22,14 +26,20 @@ function setup(){
 }
 
 function draw(){
-    background(0);
-    stroke(255);
-    noFill();
+    background(255);
+    noStroke(0);
+    push();
+    fill(93, 64, 55);
     beginShape();
     for (let i = 0; i < terrainVertices.length; i++) {
         vertex(terrainVertices[i].x, terrainVertices[i].y);
+        ellipse(terrainVertices[i].x, terrainVertices[i].y, 2);
     }
-    endShape();
+    vertex(1024, 768);
+    vertex(0, 768);
+    vertex(0,0);
+    endShape(CLOSE);
+    pop();
 
     energy.updateVelocity(height - cart.position.y,0);
     cart.velocity.setMag(energy.velocity);

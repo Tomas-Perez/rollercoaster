@@ -16,7 +16,7 @@ Body.prototype.update = function () {
 
 Body.prototype.display = function () {
     push();
-    stroke(255);
+    fill(0);
     ellipse(this.position.x, this.position.y, 10);
     pop();
 };
