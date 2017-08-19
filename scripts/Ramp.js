@@ -10,7 +10,7 @@ Ramp.prototype.display = function(){
     beginShape();
     for (let i = 0; i < this.vertices.length; i++) {
         vertex(this.vertices[i].x, this.vertices[i].y);
-        ellipse(this.vertices[i].x, this.vertices[i].y, 2);
+        //ellipse(this.vertices[i].x, this.vertices[i].y, 2);
     }
     vertex(1024, 768);
     vertex(0, 768);
