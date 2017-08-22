@@ -3,9 +3,7 @@ let body, railGuide, energy, ramp, cart, run;
 const rampColor = '#795548';
 const mass = 50;
 const springConst = 0;
-let gravity = 5/36; //if(1 pixel == 1cm) 1 == 36 m/s^2
-let minY = 50;
-let maxX = 0;
+let gravity = 10/36; //if(1 pixel == 1cm) 1 == 36 m/s^2
 
 function setup(){
     createCanvas(1500, 768);
@@ -23,7 +21,6 @@ function setup(){
 
     ramp = new Ramp(terrainVertices, rampColor);
     body = new Body(new p5.Vector(0,0), mass);
-    cart = new Cart(body.position);
     const cartHeight = height - body.position.y;
     energy = new Energy(mass, gravity, springConst, cartHeight, 0, 0);
     railGuide = new RailGuide(body, terrainVertices, 0);
@@ -39,13 +36,10 @@ function draw(){
         body.velocity.setMag(energy.velocity);
         body.update();
     }
-    body.display();
+    displayCart(body.position, body.getTargetHeading());
 
-    if(body.position.y < minY) minY = body.position.y;
-    if(body.position.x > maxX) maxX = body.position.x;
-
-    if((body.position.y < 3) && ((1024 - body.position.x) < 5)){
-        run = false;
+    if((body.position.y <= 3) && ((1024 - body.position.x) <= 3)){
+        pause();
         text('Finished!', 1100, 300);
     }
 

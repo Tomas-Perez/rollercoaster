@@ -16,6 +16,9 @@ Body.prototype.update = function () {
     const velocityMagnitude = this.velocity.mag();
     const intMagnitude = int(velocityMagnitude);
     const decimalMagnitude = velocityMagnitude - intMagnitude;
+    if(this.position.dist(this.target) < 1){
+        this.listeners.forEach(func => func());
+    }
     for(let i = 0; i < intMagnitude; i++){
         if(this.position.dist(this.target) < 1){
             this.listeners.forEach(func => func());
