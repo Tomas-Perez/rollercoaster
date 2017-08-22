@@ -12,8 +12,8 @@ Ramp.prototype.display = function(){
         vertex(this.vertices[i].x, this.vertices[i].y);
         //ellipse(this.vertices[i].x, this.vertices[i].y, 2);
     }
-    vertex(1024, 768);
-    vertex(0, 768);
+    vertex(width, height);
+    vertex(0, height);
     vertex(0,0);
     endShape(CLOSE);
     pop();

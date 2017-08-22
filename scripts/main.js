@@ -2,16 +2,21 @@ const terrainVertices = [];
 let body, railGuide, energy, ramp, cart, run, img;
 const rampColor = '#795548';
 const mass = 50;
+const rampHeightLeft = 500;
+const rampHeightRight = 500;
+const maxHeight = 500;
 const springConst = 0;
 let gravity = 10/36; //if(1 pixel == 1cm) 1 == 36 m/s^2
 
 function setup(){
-    createCanvas(1500, 768);
+    createCanvas(1500, 576);
     img = loadImage('./assets/cart.png');
 
     const pathResolution = 5;
     run = true;
-    let cartPath = 'M0 0 Q0 700 512 700 Q1024 700 1024 0';
+    const rampHeightLeftPath = maxHeight - rampHeightLeft;
+    const rampHeightRightPath = maxHeight - rampHeightRight;
+    let cartPath = 'M0 ' + rampHeightLeftPath + 'Q0 500 512 500 Q1024 500 1024 ' + rampHeightRightPath;
 
     let cartPathLength = Raphael.getTotalLength(cartPath);
     for (let c = 0; c < cartPathLength; c += pathResolution) {
@@ -23,14 +28,15 @@ function setup(){
 
     ramp = new Ramp(terrainVertices, rampColor);
     body = new Body(new p5.Vector(0,0), mass);
+    railGuide = new RailGuide(body, terrainVertices, 0);
     const cartHeight = height - body.position.y;
     energy = new Energy(mass, gravity, springConst, cartHeight, 0, 0);
-    railGuide = new RailGuide(body, terrainVertices, 0);
-    body.velocity = new p5.Vector(0.1, 0.1);
+    body.acceleration = new p5.Vector(0, gravity);
     body.listeners.push(railGuide.chooseTarget.bind(railGuide));
 }
 
 function draw(){
+    scale(1);
     background(255);
     ramp.display();
     if(run) {
@@ -39,6 +45,7 @@ function draw(){
         body.update();
     }
     displayCart(body.position, body.getTargetHeading(), img);
+    body.display();
 
     if((body.position.y <= 3) && ((1024 - body.position.x) <= 3)){
         pause();
