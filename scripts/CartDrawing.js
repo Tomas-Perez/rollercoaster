@@ -1,12 +1,15 @@
-const displayCart = function(position, angle){
-    const yOffSet = 15;
+const displayCart = function(position, angle, img){
+    const yOffSet = 18;
+    let scale = 0.05;
     push();
     noStroke();
-    fill(0);
     translate(position.x, position.y);
-    const headingVector = p5.Vector.fromAngle(angle);
-    rotate(angle);
-    rectMode(RADIUS);
-    rect(0, headingVector.x < 0 ? yOffSet : -yOffSet, 30, 10);
+    let headingVector = p5.Vector.fromAngle(angle);
+    if(headingVector.x < 0){
+        headingVector = new p5.Vector(-headingVector.x, -headingVector.y);
+    }
+    rotate(headingVector.heading());
+    imageMode(CENTER);
+    image(img, 0, -yOffSet, 1222 * scale, 742 * scale);
     pop();
 };

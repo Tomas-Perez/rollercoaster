@@ -1,5 +1,5 @@
 const terrainVertices = [];
-let body, railGuide, energy, ramp, cart, run;
+let body, railGuide, energy, ramp, cart, run, img;
 const rampColor = '#795548';
 const mass = 50;
 const springConst = 0;
@@ -7,6 +7,8 @@ let gravity = 10/36; //if(1 pixel == 1cm) 1 == 36 m/s^2
 
 function setup(){
     createCanvas(1500, 768);
+    img = loadImage('./assets/cart.png');
+
     const pathResolution = 5;
     run = true;
     let cartPath = 'M0 0 Q0 700 512 700 Q1024 700 1024 0';
@@ -36,7 +38,7 @@ function draw(){
         body.velocity.setMag(energy.velocity);
         body.update();
     }
-    displayCart(body.position, body.getTargetHeading());
+    displayCart(body.position, body.getTargetHeading(), img);
 
     if((body.position.y <= 3) && ((1024 - body.position.x) <= 3)){
         pause();
