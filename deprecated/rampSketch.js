@@ -37,7 +37,7 @@ Runner.run(runner, engine);
 // add bodies
 let terrain;
 
-$.get('./svg/ramp.svg').done(data => {
+$.get('./svg/rampDrawing.svg').done(data => {
     const vertexSets = [];
 
     $(data).find('path').each(function(i, path) {

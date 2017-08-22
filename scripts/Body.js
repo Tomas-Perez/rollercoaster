@@ -5,17 +5,15 @@
 const Body = function(position, mass){
     this.position = position;
     this.mass = mass;
-    this.velocity = new p5.Vector(0,0);
+    this.velocity = 0;
     this.acceleration = new p5.Vector(0,0);
     this.target = new p5.Vector(0, 0);
     this.listeners = [];
 };
 
 Body.prototype.update = function () {
-    this.velocity = p5.Vector.add(this.velocity, this.acceleration);
-    const velocityMagnitude = this.velocity.mag();
-    const intMagnitude = int(velocityMagnitude);
-    const decimalMagnitude = velocityMagnitude - intMagnitude;
+    const intMagnitude = int(this.velocity);
+    const decimalMagnitude = this.velocity - intMagnitude;
     if(this.position.dist(this.target) < 1){
         this.listeners.forEach(func => func());
     }

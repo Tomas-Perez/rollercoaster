@@ -37,4 +37,6 @@ Energy.prototype.updateVelocity = function(height, springLength){
     this.springLength = springLength;
     const kineticEnergy = this.actualEnergy - this.calculatePotential(height) - this.calculateElastic(springLength);
     this.velocity = this.calculateVelocity(kineticEnergy);
+
+    return this.velocity;
 };

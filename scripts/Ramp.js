@@ -1,20 +1,15 @@
+const Ramp = function(maxHeight, leftHeight, rightHeight){
+    this.vertices = [];
+    const pathResolution = 5;
+    const rampHeightLeftPath = maxHeight - leftHeight;
+    const rampHeightRightPath = maxHeight - rightHeight;
+    let cartPath = 'M0 ' + rampHeightLeftPath + 'Q0 500 512 500 Q1024 500 1024 ' + rampHeightRightPath;
 
-const Ramp = function(vertices, color){
-    this.vertices = vertices;
-    this.color = color;
-};
-
-Ramp.prototype.display = function(){
-    push();
-    fill(this.color);
-    beginShape();
-    for (let i = 0; i < this.vertices.length; i++) {
-        vertex(this.vertices[i].x, this.vertices[i].y);
-        //ellipse(this.vertices[i].x, this.vertices[i].y, 2);
+    let cartPathLength = Raphael.getTotalLength(cartPath);
+    for (let c = 0; c < cartPathLength; c += pathResolution) {
+        let point = Raphael.getPointAtLength(cartPath, c);
+        this.vertices.push(new p5.Vector(point.x, point.y));
     }
-    vertex(width, height);
-    vertex(0, height);
-    vertex(0,0);
-    endShape(CLOSE);
-    pop();
+    let lastCartPathPoint = Raphael.getPointAtLength(cartPath, cartPathLength - 1);
+    this.vertices.push(new p5.Vector(lastCartPathPoint.x, lastCartPathPoint.y));
 };

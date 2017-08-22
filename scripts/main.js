@@ -1,56 +1,51 @@
-const terrainVertices = [];
-let body, railGuide, energy, ramp, cart, run, img;
+const maxHeight = 500;
 const rampColor = '#795548';
+
+let body, railGuide, energy, rampDrawing, run, cart, ramp;
 const mass = 50;
+const velocity = 0;
+const springLength = 0;
 const rampHeightLeft = 500;
 const rampHeightRight = 500;
-const maxHeight = 500;
 const springConst = 0;
-let gravity = 10/36; //if(1 pixel == 1cm) 1 == 36 m/s^2
+const gravity = 10/36; //if(1 pixel == 1cm) 1 == 36 m/s^2
 
 function setup(){
     createCanvas(1500, 576);
-    img = loadImage('./assets/cart.png');
+    const img = loadImage('./assets/cart.png');
 
-    const pathResolution = 5;
     run = true;
-    const rampHeightLeftPath = maxHeight - rampHeightLeft;
-    const rampHeightRightPath = maxHeight - rampHeightRight;
-    let cartPath = 'M0 ' + rampHeightLeftPath + 'Q0 500 512 500 Q1024 500 1024 ' + rampHeightRightPath;
 
-    let cartPathLength = Raphael.getTotalLength(cartPath);
-    for (let c = 0; c < cartPathLength; c += pathResolution) {
-        let point = Raphael.getPointAtLength(cartPath, c);
-        terrainVertices.push(new p5.Vector(point.x, point.y));
-    }
-    let lastCartPathPoint = Raphael.getPointAtLength(cartPath, cartPathLength - 1);
-    terrainVertices.push(new p5.Vector(lastCartPathPoint.x, lastCartPathPoint.y));
-
-    ramp = new Ramp(terrainVertices, rampColor);
+    ramp = new Ramp(maxHeight, rampHeightLeft, rampHeightRight);
+    rampDrawing = new RampDrawing(ramp.vertices, rampColor);
     body = new Body(new p5.Vector(0,0), mass);
-    railGuide = new RailGuide(body, terrainVertices, 0);
+    railGuide = new RailGuide(body, ramp.vertices);
+    cart = new CartDrawing(body, img);
     const cartHeight = height - body.position.y;
-    energy = new Energy(mass, gravity, springConst, cartHeight, 0, 0);
+    energy = new Energy(mass, gravity, springConst, cartHeight, velocity, springLength);
+
     body.acceleration = new p5.Vector(0, gravity);
     body.listeners.push(railGuide.chooseTarget.bind(railGuide));
+    body.position.y += 0.1;
 }
 
 function draw(){
     scale(1);
     background(255);
-    ramp.display();
+    rampDrawing.display();
     if(run) {
-        energy.updateVelocity(height - body.position.y, 0);
-        body.velocity.setMag(energy.velocity);
+        body.velocity = energy.updateVelocity(height - body.position.y, 0);
         body.update();
     }
-    displayCart(body.position, body.getTargetHeading(), img);
+    cart.display();
     body.display();
 
+    /*
     if((body.position.y <= 3) && ((1024 - body.position.x) <= 3)){
         pause();
         text('Finished!', 1100, 300);
     }
+    */
 
     text('Velocity: ' + energy.velocity.toFixed(2), 1100, 210);
     text('Height: ' + energy.height.toFixed(2), 1100, 230);

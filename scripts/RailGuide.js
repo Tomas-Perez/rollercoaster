@@ -2,12 +2,11 @@
  * @author Tomas Perez Molina
  */
 
-const RailGuide = function(body, railVertices, acceleration){
+const RailGuide = function(body, railVertices){
     this.body = body;
     this.railVertices = railVertices;
     this.target = 0;
     this.direction = 1;
-    this.acceleration = acceleration;
     this.body.position = this.railVertices[this.target];
     this.body.target = this.railVertices[this.target];
 };
@@ -15,12 +14,8 @@ const RailGuide = function(body, railVertices, acceleration){
 RailGuide.prototype.chooseTarget = function(){
     if (this.target === this.railVertices.length - 1) this.direction = -1;
     else if (this.target === 0) this.direction = 1;
-    else if (this.body.velocity.mag() < 1) {
-        let previousTarget = this.railVertices[this.target - this.direction];
-        let previousTargetVector = p5.Vector.sub(previousTarget, this.body.position);
-        if (sameVectorDirection(previousTargetVector, this.body.velocity)) {
-            this.direction *= -1;
-        }
+    else if (this.body.velocity < 1) {
+        this.direction *= -1;
     }
     this.target += this.direction;
     this.body.target = this.railVertices[this.target];
