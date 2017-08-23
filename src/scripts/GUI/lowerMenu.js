@@ -4,20 +4,29 @@ function LowerMenu(x, y, width, height, color, parent) {
     this.y = y;
     this.height = height;
     this.width = width;
-    this.playBtn = new ImageButton(x + (width*0.03), y + (height/3), 70, 70, "../assets/play.png", parent, 'imageButton', 'playbtn', toggleVarMenu);
-    this.pauseBtn = new ImageButton(x + (width*0.04), y + (height/3), 70, 70, "../assets/pause.png", parent, 'imageButton', 'pausebtn', toggleVarMenu);
+    this.playBtn = new ImageButton(x + (width*0.03), y + (height/3), 70, 70, "../assets/play.png", parent, 'imageButton', 'playbtn', exercise.play.bind(exercise));
+    this.pauseBtn = new ImageButton(x + (width*0.04), y + (height/3), 70, 70, "../assets/pause.png", parent, 'imageButton', 'pausebtn', exercise.pause.bind(exercise));
     this.varBtn = new ImageButton(x + (width*0.05), y + (height/3), 70, 70, "../assets/changeExercise.png", parent, 'imageButton', 'varbtn', toggleExpMenu);
     this.expBtn = new ImageButton(x + (width*0.06), y + (height/3), 70, 70, "../assets/variables.png", parent, 'imageButton', 'expbtn', toggleVarMenu);
+    this.initialEnergy = exercise.energy.actualEnergy;
 }
 
 LowerMenu.prototype.display = function(){
     let menuColor = this.color;
     fill(menuColor[0], menuColor[1], menuColor[2]);
     rect(this.x, this.y, this.width, this.height);
-    this.bars(500,500,500);
+    let potentialEnergy = exercise.energy.calculatePotential(exercise.energy.height);
+    let kineticEnergy = exercise.energy.calculateKinetic(exercise.energy.velocity);
+    let elasticEnergy = exercise.energy.calculateElastic(exercise.energy.springLength);
+    let totalEnergy = exercise.energy.actualEnergy;
+    let bar1Length = map(potentialEnergy, 0, this.initialEnergy, 0, 500);
+    let bar2Length = map(kineticEnergy, 0, this.initialEnergy, 0, 500);
+    let bar3Length = map(elasticEnergy, 0, this.initialEnergy, 0, 500);
+    let bar4length = map(totalEnergy, 0, this.initialEnergy, 0, 500);
+    this.bars(bar1Length ,bar2Length,bar3Length, bar4length);
 };
 
-LowerMenu.prototype.bars = function (bar1length, bar2length, bar3length) {
+LowerMenu.prototype.bars = function (bar1length, bar2length, bar3length, bar4length) {
     let barSeparation = 30;
     let barHeight = 20;
     let middleLowerMenuX = this.x + this.width/2;
@@ -30,5 +39,5 @@ LowerMenu.prototype.bars = function (bar1length, bar2length, bar3length) {
     fill(0,0,255);
     rect(middleLowerMenuX, middleLowerMenuY + barSeparation, bar3length, barHeight);
     fill(200,200,200);
-    rect(middleLowerMenuX, middleLowerMenuY + 2*barSeparation, bar3length, barHeight);
+    rect(middleLowerMenuX, middleLowerMenuY + 2*barSeparation, bar4length, barHeight);
 }
