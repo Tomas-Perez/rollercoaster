@@ -9,6 +9,5 @@ function ImageButton(x, y, width, height, path, parent, classs, id, onClick) {
     this.btn.parent(parent);
     this.btn.addClass(classs);
     this.btn.mousePressed(onClick);
-    //btnCooldown(id)
     //this.btn.mousedown(onClick);
 }
