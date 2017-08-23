@@ -28,16 +28,27 @@ LowerMenu.prototype.display = function(){
 
 LowerMenu.prototype.bars = function (bar1length, bar2length, bar3length, bar4length) {
     let barSeparation = 30;
+    let stringSeparation = 15;
+    let stringSize = 17;
     let barHeight = 20;
     let middleLowerMenuX = this.x + this.width/2;
     let middleLowerMenuY = this.y + this.height/2;
     stroke(255);
     fill(255,0,0);
     rect(middleLowerMenuX, middleLowerMenuY - barSeparation, bar1length, barHeight);
+    fill(0);
+    textSize(stringSize);
+    text("Energia potencial: " + round(exercise.energy.calculatePotential(exercise.energy.height)) + " N",middleLowerMenuX, middleLowerMenuY - barSeparation + stringSeparation);
     fill(0,255,0);
     rect(middleLowerMenuX, middleLowerMenuY, bar2length, barHeight);
+    fill(0);
+    textSize(stringSize);
+    text("Energia cinetica: " + round(exercise.energy.calculateKinetic(exercise.energy.velocity))+ " N",middleLowerMenuX, middleLowerMenuY + stringSeparation);
     fill(0,0,255);
     rect(middleLowerMenuX, middleLowerMenuY + barSeparation, bar3length, barHeight);
+    fill(0);
+    textSize(stringSize);
+    text("Energia elastica: " + round(exercise.energy.calculateElastic(exercise.energy.springLength))+ " N",middleLowerMenuX, middleLowerMenuY + barSeparation+ stringSeparation);
     fill(200,200,200);
     rect(middleLowerMenuX, middleLowerMenuY + 2*barSeparation, bar4length, barHeight);
 }
