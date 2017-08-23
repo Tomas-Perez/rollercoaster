@@ -14,7 +14,7 @@ const gravity = 10/36; //if(1 pixel == 1cm) 1 == 36 m/s^2
 let exercise;
 
 function setup(){
-    createCanvas(1500, 576);
+    createCanvas(1024, 576);
     exercise = new Exercise();
 }
 

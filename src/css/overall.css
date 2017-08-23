@@ -1,0 +1,63 @@
+body{
+    background-color: blanchedalmond;
+}
+
+.canvasDiv{
+    margin: auto;
+}
+
+.canvas{
+    position:absolute !important;
+    float:left !important;
+}
+
+.imageButton{
+    position: relative;
+}
+
+.rightMenu{
+    position: relative;
+    float: right;
+    z-index: 9;
+    background-color: white;
+    display: none;
+}
+
+.menuTitleDiv{
+    text-align: center;
+    font-family: sans-serif;
+    font-size: x-large;
+    margin: 5% 0px;
+}
+
+.menuTitle{
+    margin: 0px;
+}
+
+.variableDiv{
+    float: left;
+}
+
+.variableName{
+    float: left;
+}
+
+.variableUnit{
+    float: left;
+    width: fit-content;
+}
+
+.variableTxtBox{
+    float: left;
+    margin: 0px;
+}
+
+input[type="number"] {
+    border: none;
+    border-bottom: solid 2px #c9c9c9;
+    transition: border 0.3s;
+}
+input[type="number"]:focus,
+input[type="number"].focus {
+    border-bottom: solid 2px #969696;
+}

@@ -1,9 +1,0 @@
-{
-  "name": "rollercoaster",
-  "version": "0.0.1",
-  "dependencies": {
-    "matter-js": "^0.13.0",
-    "p5": "latest",
-    "paper": "latest"
-  }
-}
