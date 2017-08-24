@@ -1,7 +1,7 @@
 const Exercise = function(options){
     options = options || {};
 
-    const img = loadImage('../assets/cart.png');
+    const img = loadImage('../assets/cartDemo.png');
     const gravity = options.gravity || 10/36; //if(1 pixel == 1cm) 1 == 36 m/s^2
 
     this.update = true;

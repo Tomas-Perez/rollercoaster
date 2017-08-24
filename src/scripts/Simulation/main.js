@@ -12,6 +12,7 @@ const gravity = 10/36; //if(1 pixel == 1cm) 1 == 36 m/s^2
 */
 
 let exercise;
+const backgroundImg = loadImage("../assets/backgroundDemo.jpg");
 
 function setup(){
     createCanvas(1024, 576);
@@ -20,7 +21,7 @@ function setup(){
 
 function draw(){
     scale(1);
-    background(255);
+    background(backgroundImg);
     exercise.run();
     //body.display();
 
