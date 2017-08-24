@@ -14,7 +14,7 @@ const Exercise = function(options){
     this.body = new Body(new p5.Vector(0,0), options.mass || 50);
     this.railGuide = new RailGuide(this.body, this.ramp.vertices);
     this.cart = new CartDrawing(this.body, img);
-    const cartHeight = height - this.body.position.y;
+    const cartHeight = this.ramp.lowestPoint.y - this.body.position.y;
     this.energy = new Energy(
         this.body.mass,
         gravity,
@@ -25,17 +25,18 @@ const Exercise = function(options){
     );
 
     this.body.acceleration = new p5.Vector(0, gravity);
-    this.body.listeners.push(this.railGuide.chooseTarget.bind(this.railGuide));
-    this.body.position.y += 0.1;
+    this.body.positionReachedListeners.push(this.railGuide.chooseTarget.bind(this.railGuide));
+    this.body.positionReachedListeners.push(this.updateBodyVelocity.bind(this));
 };
 
 Exercise.prototype.run = function(){
     this.rampDrawing.display();
     if(this.update) {
-        this.body.velocity = this.energy.updateVelocity(height - this.body.position.y, 0);
+        this.updateBodyVelocity();
         this.body.update();
     }
     this.cart.display();
+    //this.body.display();
 };
 
 Exercise.prototype.pause = function(){
@@ -45,3 +46,8 @@ Exercise.prototype.pause = function(){
 Exercise.prototype.play = function(){
     this.update = true;
 };
+
+Exercise.prototype.updateBodyVelocity = function () {
+    this.body.velocity = this.energy.updateVelocity(this.ramp.lowestPoint.y - this.body.position.y, 0);
+};
+

@@ -16,7 +16,7 @@ const backgroundImg = loadImage("../assets/backgroundDemo.jpg");
 
 function setup(){
     createCanvas(1024, 576);
-    exercise = new Exercise();
+    exercise = new Exercise({rampHeightLeft: 300});
 }
 
 function draw(){
