@@ -29,14 +29,26 @@ Energy.prototype.calculateElastic = function(springLength){
 };
 
 Energy.prototype.calculateVelocity = function(kineticEnergy){
-  return Math.sqrt(2 * kineticEnergy / this.mass);
+    return Math.sqrt(2 * kineticEnergy / this.mass);
 };
 
 Energy.prototype.updateVelocity = function(height, springLength){
     this.height = height;
     this.springLength = springLength;
-    const kineticEnergy = this.actualEnergy - this.calculatePotential(height) - this.calculateElastic(springLength);
+    const kineticEnergy = this.actualEnergy - this.getPotential() - this.getElastic();
     this.velocity = this.calculateVelocity(kineticEnergy);
 
     return this.velocity;
+};
+
+Energy.prototype.getPotential = function(){
+    return this.calculatePotential(this.height);
+};
+
+Energy.prototype.getElastic = function(){
+    return this.calculateElastic(this.springLength);
+};
+
+Energy.prototype.getKinetic = function(){
+    return this.calculateKinetic(this.velocity);
 };

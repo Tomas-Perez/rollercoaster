@@ -10,9 +10,9 @@ function LowerMenu(x, y, width, height, color, parent) {
     this.expBtn = new ImageButton(x + (width*0.06), y + (height/3), 70, 70, "../assets/variables.png", parent, 'imageButton', 'expbtn', toggleVarMenu);
     // energy variables
     this.initialEnergy = exercise.energy.actualEnergy;
-    this.potentialEnergy = exercise.energy.calculatePotential(exercise.energy.height);
-    this.kineticEnergy = exercise.energy.calculateKinetic(exercise.energy.velocity);
-    this.elasticEnergy = exercise.energy.calculateElastic(exercise.energy.springLength);
+    this.potentialEnergy = exercise.energy.getPotential();
+    this.kineticEnergy = exercise.energy.getKinetic();
+    this.elasticEnergy = exercise.energy.getElastic();
     this.totalEnergy = exercise.energy.actualEnergy;
 }
 
@@ -20,9 +20,9 @@ LowerMenu.prototype.display = function(){
     let menuColor = this.color;
     fill(menuColor[0], menuColor[1], menuColor[2]);
     rect(this.x, this.y, this.width, this.height);
-    this.potentialEnergy = exercise.energy.calculatePotential(exercise.energy.height);
-    this.kineticEnergy = exercise.energy.calculateKinetic(exercise.energy.velocity);
-    this.elasticEnergy = exercise.energy.calculateElastic(exercise.energy.springLength);
+    this.potentialEnergy = exercise.energy.getPotential();
+    this.kineticEnergy = exercise.energy.getKinetic();
+    this.elasticEnergy = exercise.energy.getElastic();
     this.totalEnergy = exercise.energy.actualEnergy;
     let bar1Length = map(this.potentialEnergy, 0, this.initialEnergy, 0, 500);
     let bar2Length = map(this.kineticEnergy, 0, this.initialEnergy, 0, 500);
