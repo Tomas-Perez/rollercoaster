@@ -16,7 +16,7 @@ let backgroundImg;
 
 function setup(){
     createCanvas(1024, 576);
-    exercise = new Exercise({rampHeightLeft: 201});
+    exercise = new Exercise({rampHeightLeft: 249, radius: 100});
 }
 
 function draw(){

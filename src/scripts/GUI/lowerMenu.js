@@ -40,22 +40,22 @@ LowerMenu.prototype.bars = function (potentialEnergy, kineticEnergy, elasticEner
     noStroke();
     fill(255,0,0);
     rect(middleLowerMenuX, middleLowerMenuY - barSeparation, bar1Length, barHeight);
-    this.barText("Energia potencial: " + actualPotential + " N", stringSize,
+    this.barText("Potential Energy: " + actualPotential + " N", stringSize,
         middleLowerMenuX, middleLowerMenuY - barSeparation + stringSeparation);
     //bar 2
     fill(0,255,0);
     rect(middleLowerMenuX, middleLowerMenuY, bar2Length, barHeight);
-    this.barText("Energia cinetica: " + actualKinetic + " N", stringSize,
+    this.barText("Kinetic Energy: " + actualKinetic + " N", stringSize,
         middleLowerMenuX, middleLowerMenuY + stringSeparation);
     //bar 3
     fill(0,0,255);
     rect(middleLowerMenuX, middleLowerMenuY + barSeparation, bar3Length, barHeight);
-    this.barText("Energia elastica: " + actualElastic + " N", stringSize,
+    this.barText("Elastic Energy: " + actualElastic + " N", stringSize,
         middleLowerMenuX, middleLowerMenuY + barSeparation+ stringSeparation);
     //bar 4
     fill(200,200,200);
     rect(middleLowerMenuX, middleLowerMenuY + 2*barSeparation, bar4Length, barHeight);
-    this.barText("Energia mecanica: " + actualMechanical + " N", stringSize,
+    this.barText("Mechanical Energy: " + actualMechanical + " N", stringSize,
         middleLowerMenuX, middleLowerMenuY + 2*barSeparation+ stringSeparation);
     pop();
 };

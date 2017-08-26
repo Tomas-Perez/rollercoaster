@@ -12,7 +12,6 @@ const Exercise = function(options){
         options.radius || 0,
         options.rampColor || '#795548'
     );
-    console.log(this.ramp.vertices);
     this.body = new Body(new p5.Vector(0,0), options.mass || 50);
     this.railGuide = new RailGuide(this.body, this.ramp.vertices);
     this.cart = new CartDrawing(this.body, img);
@@ -37,7 +36,7 @@ Exercise.prototype.run = function(){
         this.updateBodyVelocity();
         this.body.update();
     }
-    this.cart.display();
+    this.cart.display(this.railGuide.direction > 0);
     //this.body.display();
 };
 
