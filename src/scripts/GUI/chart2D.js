@@ -1,14 +1,44 @@
-function createCharts(ctx) {
-let chartsDiv = createDiv("charts");
-chartsDiv.width  = 250;
-chartsDiv.height = 250;
+function chart2D(parent, number){
+    this.chartsWidth = 250;
+    this.chartsHeight = 250;
+    this.id = "chart" + number;
 
-    let myChart = new Chart(chartsDiv, {
+    //unique div for a specific chart creation
+    this.chartDiv = createDiv();
+    this.chartDiv.parent(parent);
+    this.chartDiv.addClass(classs);
+    this.chartDiv.id(id);
+    this.chartDiv.style('width', chartsWidth + 'px');
+    this.chartDiv.style('height', chartsHeight + 'px');
+
+    //charts canvas creation
+    this.chartCanvas = document.createElement('canvas');
+    this.chartCanvas.parent = id;
+    this.chartCanvas.width = this.chartsWidth;
+    this.chartCanvas.height = this.chartsHeight;
+    document.getElementById(id).appendChild(this.chartCanvas);
+}
+
+function createChart(typeNumber) {
+
+
+
+
+
+    //context creation
+    let context = chartCanvas.getContext('2d');
+    //context.fillStyle = "#000000";
+    //context.fill();
+
+
+
+
+    new Chart(context, {
         type: 'bar',
         data: {
-            labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+            labels: ["disaster", "almost", "not really", "tried", "idk", "i give up"],
             datasets: [{
-                label: '# of Votes',
+                label: 'failed charts creation reactions',
                 data: [12, 19, 3, 5, 2, 3],
                 backgroundColor: [
                     'rgba(255, 99, 132, 0.2)',
@@ -36,14 +66,9 @@ chartsDiv.height = 250;
                         beginAtZero: true
                     }
                 }]
-            }//,
-//            layout:{
-//                padding: {
-//                    right: canvas.width - 100,
-//                    bottom: canvas.height - 100
-//               }
-//            }
+            },
+            responsive: false
         }
     });
-    myChart.parent()
+
 }

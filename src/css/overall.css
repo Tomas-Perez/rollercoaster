@@ -2,12 +2,16 @@ body{
     background-color: blanchedalmond;
 }
 
+.chartsDiv{
+    float: left;
+}
+
+
 .canvasDiv{
-    margin: auto;
+    float:left;
 }
 
 .canvas{
-    position:absolute !important;
     float:left !important;
 }
 
