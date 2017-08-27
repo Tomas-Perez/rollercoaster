@@ -6,7 +6,9 @@ body{
     float: left;
 }
 
-
+.charts{
+    float: left;
+}
 .canvasDiv{
     float:left;
 }

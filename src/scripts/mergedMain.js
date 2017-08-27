@@ -39,7 +39,8 @@ function setup() {
     varRightMenu.addVariable(new Variable("gravity", "m", varRightMenu.width, varRightMenu.height, varRightMenu.id, 0));
     varRightMenu.addVariable(new Variable("gravity", "m", varRightMenu.width, varRightMenu.height, varRightMenu.id, 1));
 
-    createChart(chartsDiv, "chartsDiv", "barChart", chartsWidth, chartsHeight);
+    let barChart = new Chart2D(chartsDivId, 1);
+    barChart.createChart('bar');
 }
 
 function draw() {
