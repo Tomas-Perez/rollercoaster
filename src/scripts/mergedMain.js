@@ -40,7 +40,7 @@ function setup() {
     varRightMenu.addVariable(new Variable("gravity", "m", varRightMenu.width, varRightMenu.height, varRightMenu.id, 1));
 
     let barChart = new Chart2D(chartsDivId, 1);
-    barChart.createChart('bar');
+    barChart.createChart('line');
 }
 
 function draw() {
