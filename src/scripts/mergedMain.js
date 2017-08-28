@@ -30,7 +30,7 @@ function setup() {
 
     //simulation canvas creation
     canvas = createCanvas(width, height);
-    canvas.addClass('canvas');
+    canvas.addClass('simulationCanvas');
     canvas.parent(canvasDiv);
     background(0);
 
