@@ -32,6 +32,8 @@ function setup() {
 function draw() {
     background(255);
     exercise.run();
-    lowerMenu.display();
+    //todo last argument should be initial energy
+    lowerMenu.display(exercise.energy.getPotential(), exercise.energy.getKinetic(),
+        exercise.energy.getElastic(), exercise.energy.actualEnergy, exercise.energy.actualEnergy);
     varRightMenu.getElementInfo(0);
 }

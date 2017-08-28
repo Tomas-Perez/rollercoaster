@@ -14,8 +14,15 @@ const RailGuide = function(body, railVertices){
 RailGuide.prototype.chooseTarget = function(){
     if (this.target === this.railVertices.length - 1) this.direction = -1;
     else if (this.target === 0) this.direction = 1;
-    else if (this.body.velocity < 1) {
-        this.direction *= -1;
+    else if (this.body.velocity === 0) {
+        if(this.body.acceleration.y > 0){
+            if(this.railVertices[this.target].y < this.railVertices[this.target - 1].y)
+                this.direction *= -1;
+        }
+        else {
+            if(this.railVertices[this.target].y > this.railVertices[this.target - 1].y)
+                this.direction *= -1;
+        }
     }
     this.target += this.direction;
     this.body.target = this.railVertices[this.target];
