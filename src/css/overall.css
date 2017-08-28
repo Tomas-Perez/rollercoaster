@@ -2,6 +2,10 @@ body{
     background-color: blanchedalmond;
 }
 
+.containerClass{
+    margin: auto;
+}
+
 .chartsDiv{
     float: left;
 }
