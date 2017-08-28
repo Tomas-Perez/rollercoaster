@@ -18,7 +18,7 @@ function RightMenu(width, height, id, classs, parent, title) {
     this.title.addClass('menuTitleDiv');
 }
 
-RightMenu.prototype.addVariable = function(element){
+RightMenu.prototype.addContent = function(element){
     this.content.push(element);
 };
 

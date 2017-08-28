@@ -6,12 +6,13 @@ function LowerMenu(x, y, width, height, color, parent) {
     this.width = width;
     this.playBtn = new ImageButton(x + (width*0.03), y + (height/3), 70, 70, "../assets/play.png", parent, 'imageButton', 'playbtn', exercise.play.bind(exercise));
     this.pauseBtn = new ImageButton(x + (width*0.04), y + (height/3), 70, 70, "../assets/pause.png", parent, 'imageButton', 'pausebtn', exercise.pause.bind(exercise));
-    this.varBtn = new ImageButton(x + (width*0.05), y + (height/3), 70, 70, "../assets/changeExercise.png", parent, 'imageButton', 'varbtn', toggleExpMenu);
-    this.expBtn = new ImageButton(x + (width*0.06), y + (height/3), 70, 70, "../assets/variables.png", parent, 'imageButton', 'expbtn', toggleVarMenu);
+    this.varBtn = new ImageButton(x + (width*0.05), y + (height/3), 70, 70, "../assets/changeExercise.png", parent, 'imageButton', 'varbtn', function(){ return toggleMenu('varbtn', 'expRightMenu'); });
+    this.expBtn = new ImageButton(x + (width*0.06), y + (height/3), 70, 70, "../assets/variables.png", parent, 'imageButton', 'expbtn', function(){ return toggleMenu('expbtn', 'varRightMenu'); });
 }
 
 LowerMenu.prototype.display = function(potentialEnergy, kineticEnergy, elasticEnergy, mechanicEnergy, initialEnergy){
-    let menuColor = this.color;
+    let color = this.color;
+    let menuColor = color;
     fill(menuColor[0], menuColor[1], menuColor[2]);
     rect(this.x, this.y, this.width, this.height);
     this.bars(potentialEnergy, kineticEnergy, elasticEnergy, mechanicEnergy, initialEnergy);
