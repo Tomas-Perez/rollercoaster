@@ -22,49 +22,87 @@ function Chart2D(parent, number){
     //context creation
     this.ctx  = document.getElementById(this.chartCanvas.id).getContext('2d');
 
+    //chart object
+
 }
 
 Chart2D.prototype.createChart = function (type) {
-    this.ctx.fillStyle = "#000000";
-    this.ctx.fill();
+    let alreadyCreated = false;
+    if (alreadyCreated === true) throw new Error("chart already created");
+    else alreadyCreated = true;
 
+    let chart;
+    let labelsArray = ["disaster", "almost", "not really", "idk", "i give up"];
+    let label = 'failed charts creation reactions';
+    let dataArray = [12, 19, 3, 6, 5];
 
-    new Chart(this.ctx, {
-        type: type,
-        data: {
-            labels: ["disaster", "almost", "not really", "tried", "idk", "i give up"],
-            datasets: [{
-                label: 'failed charts creation reactions',
-                data: [12, 19, 3, 5, 2, 5],
-                backgroundColor: [
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(153, 102, 255, 0.2)',
-                    'rgba(255, 159, 64, 0.2)'
-                ],
-                borderColor: [
-                    'rgba(255,99,132,1)',
-                    'rgba(54, 162, 235, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(75, 192, 192, 1)',
-                    'rgba(153, 102, 255, 1)',
-                    'rgba(255, 159, 64, 1)'
-                ],
-                borderWidth: 1
-            }]
-        },
-        options: {
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        beginAtZero: true
-                    }
-                }]
-            },
-            responsive: false
-        }
-    });
+    switch (type) {
+        case 'bar':
+             chart = new Chart(this.ctx, {
+                type: 'bar',
+                data: {
+                    labels: labelsArray,
+                    datasets: [{
+                        label: label,
+                        data: dataArray,
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(153, 102, 255, 0.2)',
+                            'rgba(255, 159, 64, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgba(255,99,132,1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(255, 159, 64, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }]
+                    },
+                    responsive: false
+                }
+            });
+        break;
 
+        case 'line':
+            chart = new Chart(this.ctx, {
+                type: 'line',
+                data: {
+                    labels: labelsArray,
+                    datasets: [{
+                        label: label,
+                        data: dataArray,
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                        ],
+                        borderColor: [
+                            'rgba(255,99,132,1)',
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    animation: {
+                        onProgress: function(animation) {
+                            progress.value = animation.animationObject.currentStep / animation.animationObject.numSteps;
+                        },
+                        duration: 0  //renders only once per draw
+                    },
+                    showLines: false
+                }
+            });
+    }
 };
