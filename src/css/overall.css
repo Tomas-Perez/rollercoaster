@@ -13,7 +13,8 @@ body{
     float:left;
 }
 
-.canvas{
+.simulationCanvas{
+    position:absolute !important;
     float:left !important;
 }
 

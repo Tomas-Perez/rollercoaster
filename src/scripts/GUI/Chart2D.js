@@ -13,7 +13,8 @@ function Chart2D(parent, number){
 
     //charts canvas creation
     this.chartCanvas = document.createElement('canvas');
-    this.chartCanvas.setAttribute('id', 'chartCanvas ' +  number);
+    this.chartCanvas.setAttribute('class', 'chartCanvas');
+    this.chartCanvas.setAttribute('id', 'chartCanvas' +  number);
     this.chartCanvas.parent = this.id;
     this.chartCanvas.width = this.chartsWidth;
     this.chartCanvas.height = this.chartsHeight;
