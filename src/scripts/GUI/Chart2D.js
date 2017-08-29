@@ -1,11 +1,12 @@
-function Chart2D(parent, number){
-    this.chartsWidth = 250;
-    this.chartsHeight = 250;
+function Chart2D(number,type){
+    this.chartsWidth = 256;
+    this.chartsHeight = 256;
+    this.chartsDivId = "chartsDiv";
     this.id = "chartDiv " + number;
 
     //unique div for a specific chart creation
     this.chartDiv = createDiv('');
-    this.chartDiv.parent(parent);
+    this.chartDiv.parent(this.chartsDivId);
     this.chartDiv.addClass('charts');
     this.chartDiv.id(this.id);
     this.chartDiv.style('width', this.chartsWidth + 'px');
@@ -23,88 +24,65 @@ function Chart2D(parent, number){
     //context creation
     this.ctx  = document.getElementById(this.chartCanvas.id).getContext('2d');
 
-    //chart object
+    //data
+    this. i = 0;
+    this.chartData = {
+        type: 'line',
+        data: {
+            labels: [0,1,2],
+            datasets: [{
+                label: 'some random data',
+                data: [0,1,2],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                ],
+                borderColor: [
+                    'rgba(255,99,132,1)',
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            animation: {
+                onProgress: function(animation) {
+                    //progress.value = animation.animationObject.currentStep / animation.animationObject.numSteps;
+                },
+                duration: 0  //renders only once per draw
+            },
+            showLines: true
+        }
+    };
+    this.i = 0;
+    this.j = 0;
+    this.chart = this.createChart(type);
 
 }
 
 Chart2D.prototype.createChart = function (type) {
-    let alreadyCreated = false;
-    if (alreadyCreated === true) throw new Error("chart already created");
-    else alreadyCreated = true;
-
-    let chart;
-    let labelsArray = ["disaster", "almost", "not really", "idk", "i give up"];
-    let label = 'failed charts creation reactions';
-    let dataArray = [12, 19, 3, 6, 5];
 
     switch (type) {
-        case 'bar':
-             chart = new Chart(this.ctx, {
-                type: 'bar',
-                data: {
-                    labels: labelsArray,
-                    datasets: [{
-                        label: label,
-                        data: dataArray,
-                        backgroundColor: [
-                            'rgba(255, 99, 132, 0.2)',
-                            'rgba(54, 162, 235, 0.2)',
-                            'rgba(255, 206, 86, 0.2)',
-                            'rgba(75, 192, 192, 0.2)',
-                            'rgba(153, 102, 255, 0.2)',
-                            'rgba(255, 159, 64, 0.2)'
-                        ],
-                        borderColor: [
-                            'rgba(255,99,132,1)',
-                            'rgba(54, 162, 235, 1)',
-                            'rgba(255, 206, 86, 1)',
-                            'rgba(75, 192, 192, 1)',
-                            'rgba(153, 102, 255, 1)',
-                            'rgba(255, 159, 64, 1)'
-                        ],
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    scales: {
-                        yAxes: [{
-                            ticks: {
-                                beginAtZero: true
-                            }
-                        }]
-                    },
-                    responsive: false
-                }
-            });
-        break;
-
         case 'line':
-            chart = new Chart(this.ctx, {
-                type: 'line',
-                data: {
-                    labels: labelsArray,
-                    datasets: [{
-                        label: label,
-                        data: dataArray,
-                        backgroundColor: [
-                            'rgba(255, 99, 132, 0.2)',
-                        ],
-                        borderColor: [
-                            'rgba(255,99,132,1)',
-                        ],
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    animation: {
-                        onProgress: function(animation) {
-                            progress.value = animation.animationObject.currentStep / animation.animationObject.numSteps;
-                        },
-                        duration: 0  //renders only once per draw
-                    },
-                    showLines: true
-                }
-            });
+            new Chart(this.ctx, this.chartData);
+            break;
+
+        case 'velocity':
+            new Chart(this.ctx, this.chartData);
+            break;
+
+        case 'etc':
+            new Chart(this.ctx, this.chartData);
             break;
     }
+};
+
+Chart2D.prototype.addData = function (){
+    this.j++;
+    if(this.j > 60) {
+        console.log(this.j);
+        this.chartData.data.labels.push(this.i);
+        this.chartData.data.datasets[0].data.push(this.i);
+        this.i++;
+        this.j = 0;
+    }
+    //this.chart.update();
 };

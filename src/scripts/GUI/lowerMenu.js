@@ -65,7 +65,6 @@ LowerMenu.prototype.barText = function(string, stringSize, x, y){
     push();
     fill(0);
     textSize(stringSize);
-    //textStyle(BOLD);
     stroke(0);
     text(string,x, y);
     pop();

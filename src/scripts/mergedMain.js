@@ -2,12 +2,14 @@ let canvas;
 let lowerMenu;
 let varRightMenu;
 let expRightMenu;
+let lineChart2;
+let lineChart;
+let lineChart3;
 
 function setup() {
     let width = 1024;
     let height = 768;
     let chartsWidth = 256;
-    let chartsHeight = 250;
     let containerDivId = "container";
     let canvasDivId = "canvasDiv";
     let chartsDivId = "chartsDiv";
@@ -45,8 +47,9 @@ function setup() {
     expRightMenu.addContent(new ExpThumbnail(expRightMenu.width, 70, expRightMenu.height, "../assets/changeExercise.png", expRightMenu.id, 1, function(){ return toggleMenu('varbtn', 'expRightMenu');}));
     expRightMenu.addContent(new ExpThumbnail(expRightMenu.width, 70, expRightMenu.height, "../assets/changeExercise.png", expRightMenu.id, 2, function(){ return toggleMenu('varbtn', 'expRightMenu');}));
 
-    let barChart = new Chart2D(chartsDivId, 1);
-    barChart.createChart('bar');
+    lineChart = new Chart2D(1, 'line');
+    lineChart2 = new Chart2D(2, 'line');
+    lineChart3 = new Chart2D(3, 'line');
 }
 
 function draw() {
@@ -56,4 +59,5 @@ function draw() {
     lowerMenu.display(exercise.energy.getPotential(), exercise.energy.getKinetic(),
         exercise.energy.getElastic(), exercise.energy.actualEnergy, exercise.energy.actualEnergy);
     varRightMenu.getElementInfo(0);
+    lineChart.addData();
 }
