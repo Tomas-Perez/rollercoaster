@@ -102,8 +102,9 @@ Chart2D.prototype.createChart = function (type) {
                         },
                         duration: 0  //renders only once per draw
                     },
-                    showLines: false
+                    showLines: true
                 }
             });
+            break;
     }
 };

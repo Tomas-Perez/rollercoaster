@@ -6,7 +6,7 @@ let expRightMenu;
 function setup() {
     let width = 1024;
     let height = 768;
-    let chartsWidth = 250;
+    let chartsWidth = 256;
     let chartsHeight = 250;
     let containerDivId = "container";
     let canvasDivId = "canvasDiv";
@@ -16,7 +16,7 @@ function setup() {
 
     //container formatting
     let container = document.getElementById(containerDivId);
-    container.style.width = width + chartsWidth + "px";
+    container.style.width = width + chartsWidth + 20 + "px";
     container.style.height = height + "px";
     //charts div formatting
     let chartsDiv = document.getElementById(chartsDivId);
@@ -46,7 +46,7 @@ function setup() {
     expRightMenu.addContent(new ExpThumbnail(expRightMenu.width, 70, expRightMenu.height, "../assets/changeExercise.png", expRightMenu.id, 2, function(){ return toggleMenu('varbtn', 'expRightMenu');}));
 
     let barChart = new Chart2D(chartsDivId, 1);
-    barChart.createChart('line');
+    barChart.createChart('bar');
 }
 
 function draw() {

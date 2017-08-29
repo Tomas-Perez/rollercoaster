@@ -8,6 +8,7 @@ body{
 
 .chartsDiv{
     float: left;
+    margin-right: 20px;
 }
 
 .charts{
