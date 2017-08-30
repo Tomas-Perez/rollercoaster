@@ -62,15 +62,15 @@ Chart2D.prototype.createChart = function (type) {
 
     switch (type) {
         case 'line':
-            new Chart(this.ctx, this.chartData);
+            return new Chart(this.ctx, this.chartData);
             break;
 
         case 'velocity':
-            new Chart(this.ctx, this.chartData);
+            return new Chart(this.ctx, this.chartData);
             break;
 
         case 'etc':
-            new Chart(this.ctx, this.chartData);
+            return new Chart(this.ctx, this.chartData);
             break;
     }
 };
@@ -84,5 +84,5 @@ Chart2D.prototype.addData = function (){
         this.i++;
         this.j = 0;
     }
-    //this.chart.update();
+    this.chart.update();
 };
