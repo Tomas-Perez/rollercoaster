@@ -1,23 +1,22 @@
-const Ramp = function(maxHeight, leftHeight, rightHeight, radius, color){
+const Ramp = function(leftHeight, rightHeight, radius, color){
     this.vertices = [];
     this.shapes = [];
     this.color = color;
     this.hasLoop = radius > 0;
     const pathResolution = 5;
-    const rampHeightLeftPath = maxHeight - leftHeight;
-    const rampHeightRightPath = maxHeight - rightHeight;
+    const rampHeightLeftPath = - leftHeight;
+    const rampHeightRightPath = - rightHeight;
     let startLoop = "";
     let loopTop = "";
     let endLoop = "";
     if(this.hasLoop){
-        startLoop = describeArc(512, 500 - radius, radius, 90, 180);
-        loopTop = describeArc(512, 500 - radius, radius, -90, 90);
-        endLoop = describeArc(512, 500 - radius, radius, 180, 270);
+        startLoop = describeArc(512, - radius, radius, 90, 180);
+        loopTop = describeArc(512, - radius, radius, -90, 90);
+        endLoop = describeArc(512, - radius, radius, 180, 270);
     }
-    let startPath = 'M0 ' + rampHeightLeftPath + ' Q0 500 512 500 ' + startLoop;
-    let endPath = endLoop + 'M512 500 Q1024 500 1024 ' + rampHeightRightPath;
+    let startPath = 'M0 ' + rampHeightLeftPath + ' Q0 0 512 0 ' + startLoop;
+    let endPath = endLoop + 'M512 0 Q1024 0 1024 ' + rampHeightRightPath;
     const paths = [startPath, loopTop, endPath];
-    this.lowestPoint = new p5.Vector(0, 0);
     for(let i = 0; i < paths.length; i++) {
         let pathLength = Raphael.getTotalLength(paths[i]);
         if(pathLength > 0) {
@@ -25,7 +24,10 @@ const Ramp = function(maxHeight, leftHeight, rightHeight, radius, color){
             for (let c = 0; c < pathLength; c += pathResolution) {
                 const point = Raphael.getPointAtLength(paths[i], c);
                 const vector = new p5.Vector(point.x, point.y);
-                if (vector.y > this.lowestPoint.y) this.lowestPoint = vector;
+                if (vector.y > this.lowestPoint || !this.lowestPoint) this.lowestPoint = vector.y;
+                if (vector.y < this.highestPoint || !this.highestPoint) this.highestPoint = vector.y;
+                if (vector.x > this.mostRightPoint || !this.mostRightPoint) this.mostRightPoint = vector.x;
+                if (vector.x < this.mostLeftPoint || !this.mostLeftPoint) this.mostLeftPoint = vector.x;
                 this.vertices.push(vector);
                 shape.push(vector);
             }

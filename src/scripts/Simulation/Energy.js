@@ -13,6 +13,7 @@ const Energy = function(mass, gravity, springConst, height, velocity, springLeng
     let potentialEnergy = this.calculatePotential(height);
     let kineticEnergy = this.calculateKinetic(velocity);
     this.actualEnergy = elasticEnergy + potentialEnergy + kineticEnergy;
+    this.initialEnergy = this.actualEnergy;
 };
 
 Energy.prototype.calculatePotential = function(height){

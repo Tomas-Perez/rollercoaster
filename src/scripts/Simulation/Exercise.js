@@ -6,7 +6,6 @@ const Exercise = function(options){
 
     this.update = true;
     this.ramp = new Ramp(
-        options.maxHeight || 500,
         options.rampHeightLeft || 500,
         options.rampHeightRight || 500,
         options.radius || 0,
@@ -15,7 +14,7 @@ const Exercise = function(options){
     this.body = new Body(new p5.Vector(0,0), options.mass || 50);
     this.railGuide = new RailGuide(this.body, this.ramp.vertices);
     this.cart = new CartDrawing(this.body, img);
-    const cartHeight = this.ramp.lowestPoint.y - this.body.position.y;
+    const cartHeight = this.ramp.lowestPoint - this.body.position.y;
     this.energy = new Energy(
         this.body.mass,
         gravity,
@@ -30,13 +29,23 @@ const Exercise = function(options){
     this.body.positionReachedListeners.push(this.updateBodyVelocity.bind(this));
 };
 
-Exercise.prototype.run = function(){
+Exercise.prototype.run = function(width, height){
+    const heightBuffer = 76;
+    const actualSimHeight = this.ramp.lowestPoint - this.ramp.highestPoint + heightBuffer;
+    const actualSimWidth = this.ramp.mostRightPoint - this.ramp.mostLeftPoint;
+    const heightScale = height / actualSimHeight;
+    const widthScale = width / actualSimWidth;
+    const finalScale = Math.min(heightScale, widthScale);
+    push();
+    scale(finalScale);
+    translate(-this.ramp.mostLeftPoint, -this.ramp.highestPoint);
     this.ramp.display();
     if(this.update) {
         this.updateBodyVelocity();
         this.body.update();
     }
     this.cart.display(this.railGuide.direction > 0);
+    pop();
     //this.body.display();
 };
 
@@ -49,6 +58,6 @@ Exercise.prototype.play = function(){
 };
 
 Exercise.prototype.updateBodyVelocity = function () {
-    this.body.velocity = this.energy.updateVelocity(this.ramp.lowestPoint.y - this.body.position.y, 0);
+    this.body.velocity = this.energy.updateVelocity(this.ramp.lowestPoint - this.body.position.y, 0);
 };
 

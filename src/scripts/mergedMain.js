@@ -54,10 +54,16 @@ function setup() {
 
 function draw() {
     background(255);
-    exercise.run();
-    //todo last argument should be initial energy
+    push();
+    exercise.run(width, height * (3/4));
+    pop();
     lowerMenu.display(exercise.energy.getPotential(), exercise.energy.getKinetic(),
-        exercise.energy.getElastic(), exercise.energy.actualEnergy, exercise.energy.actualEnergy);
+        exercise.energy.getElastic(), exercise.energy.actualEnergy, exercise.energy.initialEnergy);
     varRightMenu.getElementInfo(0);
     lineChart.addData();
+}
+
+function changeExc(height){
+    //testing
+    exercise = new Exercise({rampHeightLeft: height, radius: 100});
 }
