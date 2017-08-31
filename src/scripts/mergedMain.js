@@ -37,7 +37,7 @@ function setup() {
     canvas.parent(canvasDiv);
     background(0);
 
-    lowerMenu = new LowerMenu(-1, canvas.height*3/4, canvas.width+1, canvas.height*1/4, [179, 229, 252], canvasDiv);
+    lowerMenu = new LowerMenu(-1, canvas.height*3/4, canvas.width+1, canvas.height*1/4, [179, 229, 252], canvasDiv, play, pause);
     varRightMenu = new RightMenu(canvas.width*1/4, canvas.height,"varRightMenu", "rightMenu", canvasDiv, "Variables");
     varRightMenu.addContent(new Variable("gravity", "m", varRightMenu.width, varRightMenu.height, varRightMenu.id, 0));
     varRightMenu.addContent(new Variable("gravity", "m", varRightMenu.width, varRightMenu.height, varRightMenu.id, 1));
@@ -72,4 +72,12 @@ function draw() {
 function changeExc(height, radius, middlePathLength){
     //testing
     exercise = new Exercise({rampHeightLeft: height, radius: radius, middlePathLength: middlePathLength});
+}
+
+function play(){
+    exercise.play();
+}
+
+function pause(){
+    exercise.pause();
 }
