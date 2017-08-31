@@ -14,7 +14,7 @@ function setup() {
     let canvasDivId = "canvasDiv";
     let chartsDivId = "chartsDiv";
 
-    exercise = new Exercise();
+    exercise = new Exercise({middlePathLength: 100});
 
     //container formatting
     let container = document.getElementById(containerDivId);
@@ -63,7 +63,7 @@ function draw() {
     lineChart.addData();
 }
 
-function changeExc(height){
+function changeExc(height, radius, middlePathLength){
     //testing
-    exercise = new Exercise({rampHeightLeft: height, radius: 100});
+    exercise = new Exercise({rampHeightLeft: height, radius: radius, middlePathLength: middlePathLength});
 }

@@ -9,7 +9,8 @@ const Exercise = function(options){
         options.rampHeightLeft || 500,
         options.rampHeightRight || 500,
         options.radius || 0,
-        options.rampColor || '#795548'
+        options.rampColor || '#795548',
+        options.middlePathLength || 0
     );
     this.body = new Body(new p5.Vector(0,0), options.mass || 50);
     this.railGuide = new RailGuide(this.body, this.ramp.vertices);

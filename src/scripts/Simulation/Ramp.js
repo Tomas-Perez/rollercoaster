@@ -1,4 +1,4 @@
-const Ramp = function(leftHeight, rightHeight, radius, color){
+const Ramp = function(leftHeight, rightHeight, radius, color, middleLength){
     this.vertices = [];
     this.shapes = [];
     this.color = color;
@@ -6,20 +6,26 @@ const Ramp = function(leftHeight, rightHeight, radius, color){
     const pathResolution = 5;
     const rampHeightLeftPath = - leftHeight;
     const rampHeightRightPath = - rightHeight;
+    const startRampWidth = 512;
+    const endRampWidth = 512;
+    const middlePathEnd = startRampWidth + middleLength;
+    const endRampCorner = middlePathEnd + endRampWidth;
     let startLoop = "";
     let loopTop = "";
     let endLoop = "";
     if(this.hasLoop){
-        startLoop = describeArc(512, - radius, radius, 90, 180);
-        loopTop = describeArc(512, - radius, radius, -90, 90);
-        endLoop = describeArc(512, - radius, radius, 180, 270);
+        startLoop = describeArc(middlePathEnd, - radius, radius, 90, 180);
+        loopTop = describeArc(middlePathEnd, - radius, radius, -90, 90);
+        endLoop = describeArc(middlePathEnd, - radius, radius, 180, 270);
     }
-    let startPath = 'M0 ' + rampHeightLeftPath + ' Q0 0 512 0 ' + startLoop;
-    let endPath = endLoop + 'M512 0 Q1024 0 1024 ' + rampHeightRightPath;
-    const paths = [startPath, loopTop, endPath];
+    let startPath = 'M0 ' + rampHeightLeftPath + ' Q0 0 ' + startRampWidth + ' 0';
+    let middlePath = 'M' + startRampWidth + ' 0 h' + middleLength + startLoop;
+    let endPath = endLoop + 'M' + middlePathEnd + ' 0 Q' + endRampCorner + ' 0 ' + endRampCorner + rampHeightRightPath;
+    const paths = [startPath, middlePath, loopTop, endPath];
     for(let i = 0; i < paths.length; i++) {
         let pathLength = Raphael.getTotalLength(paths[i]);
         if(pathLength > 0) {
+            if(paths[i] === loopTop) this.loopIndex = this.shapes.length;
             let shape = [];
             for (let c = 0; c < pathLength; c += pathResolution) {
                 const point = Raphael.getPointAtLength(paths[i], c);
@@ -31,6 +37,9 @@ const Ramp = function(leftHeight, rightHeight, radius, color){
                 this.vertices.push(vector);
                 shape.push(vector);
             }
+            const lastPoint = Raphael.getPointAtLength(paths[i], pathLength - 1);
+            const vector = new p5.Vector(lastPoint.x, lastPoint.y);
+            shape.push(vector);
             this.shapes.push(shape);
         }
     }
@@ -40,9 +49,10 @@ const Ramp = function(leftHeight, rightHeight, radius, color){
 
 Ramp.prototype.display = function(){
     push();
+    stroke(0);
     for(let i = this.shapes.length - 1; i >= 0; i--) {
         let shape = this.shapes[i];
-        if(this.hasLoop && i === 1) noFill();
+        if(this.hasLoop && i === this.loopIndex) noFill();
         else fill(this.color);
         beginShape();
         for (let j = 0; j < shape.length; j++) {
