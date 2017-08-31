@@ -2,9 +2,9 @@ let canvas;
 let lowerMenu;
 let varRightMenu;
 let expRightMenu;
-let lineChart2;
-let lineChart;
-let lineChart3;
+let velocityChart;
+let positionChart;
+let heightChart;
 
 function setup() {
     let width = 1024;
@@ -47,11 +47,9 @@ function setup() {
     expRightMenu.addContent(new ExpThumbnail(expRightMenu.width, 70, expRightMenu.height, "../assets/changeExercise.png", expRightMenu.id, 1, function(){ return toggleMenu('varbtn', 'expRightMenu');}));
     expRightMenu.addContent(new ExpThumbnail(expRightMenu.width, 70, expRightMenu.height, "../assets/changeExercise.png", expRightMenu.id, 2, function(){ return toggleMenu('varbtn', 'expRightMenu');}));
 
-    /*
-    lineChart = new Chart2D(1, 'line');
-    lineChart2 = new Chart2D(2, 'line');
-    lineChart3 = new Chart2D(3, 'line');
-    */
+    positionChart = new Chart2D(1, 'line');
+    velocityChart = new Chart2D(2, 'velocity');
+    heightChart = new Chart2D(3, 'height');
 }
 
 function draw() {
@@ -66,7 +64,9 @@ function draw() {
     lowerMenu.display(exercise.energy.getPotential(), exercise.energy.getKinetic(),
         exercise.energy.getElastic(), exercise.energy.actualEnergy, exercise.energy.initialEnergy);
     varRightMenu.getElementInfo(0);
-    //lineChart.addData();
+    positionChart.addData();
+    velocityChart.addData();
+    heightChart.addData();
 }
 
 function changeExc(height, radius, middlePathLength){

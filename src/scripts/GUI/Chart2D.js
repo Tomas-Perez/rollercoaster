@@ -3,6 +3,7 @@ function Chart2D(number,type){
     this.chartsHeight = 256;
     this.chartsDivId = "chartsDiv";
     this.id = "chartDiv " + number;
+    this.type = type;
 
     //unique div for a specific chart creation
     this.chartDiv = createDiv('');
@@ -29,15 +30,15 @@ function Chart2D(number,type){
     this.chartData = {
         type: 'line',
         data: {
-            labels: [0,1,2],
+            labels: [],
             datasets: [{
                 label: 'some random data',
-                data: [0,1,2],
+                data: [],
                 backgroundColor: [
-                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(179, 229, 252, 0.2)',
                 ],
                 borderColor: [
-                    'rgba(255,99,132,1)',
+                    'rgba(179, 229, 252, 1)',
                 ],
                 borderWidth: 1
             }]
@@ -54,13 +55,13 @@ function Chart2D(number,type){
     };
     this.i = 0;
     this.j = 0;
-    this.chart = this.createChart(type);
+    this.chart = this.createChart(this.type);
 
 }
 
-Chart2D.prototype.createChart = function (type) {
+Chart2D.prototype.createChart = function () {
 
-    switch (type) {
+    switch (this.type) {
         case 'line':
             return new Chart(this.ctx, this.chartData);
             break;
@@ -69,18 +70,40 @@ Chart2D.prototype.createChart = function (type) {
             return new Chart(this.ctx, this.chartData);
             break;
 
-        case 'etc':
+        case 'height':
             return new Chart(this.ctx, this.chartData);
             break;
     }
 };
 
 Chart2D.prototype.addData = function (){
+    switch (this.type) {
+        case 'line':
+            this.updateChart(exercise.body.position.x, this.i);
+            break;
+
+        case 'velocity':
+            this.updateChart(exercise.energy.velocity, this.i);
+            break;
+
+        case 'height':
+            this.updateChart(exercise.energy.height, this.i);
+            break;
+    }
+};
+
+Chart2D.prototype.updateChart = function(data,label){
+    let interval = 2;
+    let secondInFrames = 60;
+    console.log(this.j);
     this.j++;
-    if(this.j % 60 === 0) {
-        this.chartData.data.labels.push(this.i);
-        this.chartData.data.datasets[0].data.push(this.i);
+    if(this.j % interval === 0) {
+        this.chartData.data.datasets[0].data.push(data);
+        if(this.i % secondInFrames === 0){
+            this.chartData.data.labels.push(label*interval/secondInFrames + "s");
+        }
+        else this.chartData.data.labels.push('');
         this.i++;
     }
-    this.chart.update();
+    if (this.j <= 325) this.chart.update();
 };
