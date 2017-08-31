@@ -25,7 +25,7 @@ ImageButton.prototype.changeImage = function (path) {
 
 ImageButton.prototype.clicked = function(){
     this.onClick();
-    this.changeImage(this.pressedPath)
+    this.changeImage(this.pressedPath);
 };
 
 
