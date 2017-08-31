@@ -22,7 +22,7 @@ function setup(){
 function draw(){
     scale(1);
     background(255);
-    exercise.run();
+    exercise.run(1024, 576);
     //body.display();
 
     /*
