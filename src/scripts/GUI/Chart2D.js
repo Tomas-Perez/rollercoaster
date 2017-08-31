@@ -26,13 +26,14 @@ function Chart2D(number,type){
     this.ctx  = document.getElementById(this.chartCanvas.id).getContext('2d');
 
     //data
-    this. i = 0;
+    this.secondsCounter = 0;
+    this.framesCounter = 0;
     this.chartData = {
         type: 'line',
         data: {
             labels: [],
             datasets: [{
-                label: 'some random data',
+                label: '',
                 data: [],
                 backgroundColor: [
                     'rgba(179, 229, 252, 0.2)',
@@ -40,37 +41,46 @@ function Chart2D(number,type){
                 borderColor: [
                     'rgba(179, 229, 252, 1)',
                 ],
-                borderWidth: 1
+                borderWidth: 1,
+                pointRadius: 0
             }]
         },
         options: {
+            title: {
+                display: true,
+                text: 'title'
+            },
+            legend:{
+                display: false
+            },
             animation: {
                 onProgress: function(animation) {
                     //progress.value = animation.animationObject.currentStep / animation.animationObject.numSteps;
                 },
                 duration: 0  //renders only once per draw
             },
-            showLines: true
+            showLines: true,
         }
     };
-    this.i = 0;
-    this.j = 0;
     this.chart = this.createChart(this.type);
 
 }
 
-Chart2D.prototype.createChart = function () {
+Chart2D.prototype.createChart = function (type) {
 
-    switch (this.type) {
+    switch (type) {
         case 'line':
+            this.chartData.options.title.text = "position over time";
             return new Chart(this.ctx, this.chartData);
             break;
 
         case 'velocity':
+            this.chartData.options.title.text = "velocity over time";
             return new Chart(this.ctx, this.chartData);
             break;
 
         case 'height':
+            this.chartData.options.title.text = "height over time";
             return new Chart(this.ctx, this.chartData);
             break;
     }
@@ -79,31 +89,35 @@ Chart2D.prototype.createChart = function () {
 Chart2D.prototype.addData = function (){
     switch (this.type) {
         case 'line':
-            this.updateChart(exercise.body.position.x, this.i);
+            this.updateChart(exercise.body.position.x);
             break;
 
         case 'velocity':
-            this.updateChart(exercise.energy.velocity, this.i);
+            this.updateChart(exercise.energy.velocity);
             break;
 
         case 'height':
-            this.updateChart(exercise.energy.height, this.i);
+            this.updateChart(exercise.energy.height);
             break;
     }
 };
 
-Chart2D.prototype.updateChart = function(data,label){
-    let interval = 2;
+Chart2D.prototype.updateChart = function(data){
+    //intervals
+    let interval = 20;
     let secondInFrames = 60;
-    console.log(this.j);
-    this.j++;
-    if(this.j % interval === 0) {
+    let updateInterval = 60;
+
+    this.framesCounter++;
+    //push data every interval frames
+    if(this.framesCounter % interval === 0) {
         this.chartData.data.datasets[0].data.push(data);
-        if(this.i % secondInFrames === 0){
-            this.chartData.data.labels.push(label*interval/secondInFrames + "s");
+        //push label every secondInFrames
+        this.secondsCounter++;
+        if(this.framesCounter % secondInFrames === 0){
+            this.chartData.data.labels.push(this.framesCounter/secondInFrames + 's');
         }
         else this.chartData.data.labels.push('');
-        this.i++;
     }
-    if (this.j <= 325) this.chart.update();
+    if (this.framesCounter % updateInterval === 0 && this.framesCounter < 320) this.chart.update();
 };
