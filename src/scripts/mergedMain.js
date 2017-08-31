@@ -47,20 +47,26 @@ function setup() {
     expRightMenu.addContent(new ExpThumbnail(expRightMenu.width, 70, expRightMenu.height, "../assets/changeExercise.png", expRightMenu.id, 1, function(){ return toggleMenu('varbtn', 'expRightMenu');}));
     expRightMenu.addContent(new ExpThumbnail(expRightMenu.width, 70, expRightMenu.height, "../assets/changeExercise.png", expRightMenu.id, 2, function(){ return toggleMenu('varbtn', 'expRightMenu');}));
 
+    /*
     lineChart = new Chart2D(1, 'line');
     lineChart2 = new Chart2D(2, 'line');
     lineChart3 = new Chart2D(3, 'line');
+    */
 }
 
 function draw() {
     background(255);
+    if(frameRate() < 30){
+        console.log('drop');
+    }
+    console.log();
     push();
     exercise.run(width, height * (3/4));
     pop();
     lowerMenu.display(exercise.energy.getPotential(), exercise.energy.getKinetic(),
         exercise.energy.getElastic(), exercise.energy.actualEnergy, exercise.energy.initialEnergy);
     varRightMenu.getElementInfo(0);
-    lineChart.addData();
+    //lineChart.addData();
 }
 
 function changeExc(height, radius, middlePathLength){

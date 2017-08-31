@@ -31,23 +31,22 @@ const Exercise = function(options){
 };
 
 Exercise.prototype.run = function(width, height){
-    const heightBuffer = 76;
-    const actualSimHeight = this.ramp.lowestPoint - this.ramp.highestPoint + heightBuffer;
-    const actualSimWidth = this.ramp.mostRightPoint - this.ramp.mostLeftPoint;
-    const heightScale = height / actualSimHeight;
-    const widthScale = width / actualSimWidth;
+    const heightScale = height / this.ramp.height;
+    const widthScale = width / this.ramp.width;
     const finalScale = Math.min(heightScale, widthScale);
+    const xTranslate = -this.ramp.mostLeftPoint;
+    const yTranslate = -this.ramp.highestPoint + height * (1/finalScale) - this.ramp.height;
     push();
     scale(finalScale);
-    translate(-this.ramp.mostLeftPoint, -this.ramp.highestPoint);
+    translate(xTranslate, yTranslate);
     this.ramp.display();
     if(this.update) {
         this.updateBodyVelocity();
         this.body.update();
     }
     this.cart.display(this.railGuide.direction > 0);
-    pop();
     //this.body.display();
+    pop();
 };
 
 Exercise.prototype.pause = function(){

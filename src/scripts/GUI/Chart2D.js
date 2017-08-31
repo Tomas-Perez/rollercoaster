@@ -78,7 +78,6 @@ Chart2D.prototype.createChart = function (type) {
 Chart2D.prototype.addData = function (){
     this.j++;
     if(this.j % 60 === 0) {
-        console.log(this.j);
         this.chartData.data.labels.push(this.i);
         this.chartData.data.datasets[0].data.push(this.i);
         this.i++;

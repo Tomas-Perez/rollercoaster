@@ -3,6 +3,7 @@ const Ramp = function(leftHeight, rightHeight, radius, color, middleLength){
     this.shapes = [];
     this.color = color;
     this.hasLoop = radius > 0;
+    this.heightBuffer = 76;
     const pathResolution = 5;
     const rampHeightLeftPath = - leftHeight;
     const rampHeightRightPath = - rightHeight;
@@ -45,6 +46,9 @@ const Ramp = function(leftHeight, rightHeight, radius, color, middleLength){
     }
     let lastCartPathPoint = Raphael.getPointAtLength(endPath, Raphael.getTotalLength(endPath) - 1);
     this.vertices.push(new p5.Vector(lastCartPathPoint.x, lastCartPathPoint.y));
+
+    this.height = this.lowestPoint - this.highestPoint + this.heightBuffer;
+    this.width = this.mostRightPoint - this.mostLeftPoint;
 };
 
 Ramp.prototype.display = function(){
@@ -59,8 +63,8 @@ Ramp.prototype.display = function(){
             vertex(shape[j].x, shape[j].y, 0);
             //ellipse(shape[j].x, shape[j].y, 2);
         }
-        vertex(shape[shape.length - 1].x, height, 0);
-        vertex(shape[0].x, height, 0);
+        vertex(shape[shape.length - 1].x, this.lowestPoint + this.heightBuffer, 0);
+        vertex(shape[0].x, this.lowestPoint + this.heightBuffer, 0);
         vertex(shape[0].x, shape[0].y, 0);
         endShape(CLOSE);
     }
