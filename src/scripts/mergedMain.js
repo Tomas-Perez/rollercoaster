@@ -2,24 +2,23 @@ let canvas;
 let lowerMenu;
 let varRightMenu;
 let expRightMenu;
-let velocityChart;
-let positionChart;
-let heightChart;
-
+let charts;
+let i;
 function setup() {
     let width = 1024;
     let height = 768;
-    let chartsWidth = 256;
+    let chartsWidth = 1024;
+    let chartsHeight = 256;
     let containerDivId = "container";
     let canvasDivId = "canvasDiv";
     let chartsDivId = "chartsDiv";
-
+    charts = [];
     exercise = new Exercise({middlePathLength: 100});
 
     //container formatting
     let container = document.getElementById(containerDivId);
-    container.style.width = width + chartsWidth + 20 + "px";
-    container.style.height = height + "px";
+    container.style.width = width + "px";
+    container.style.height = height + chartsHeight + "px";
     //charts div formatting
     let chartsDiv = document.getElementById(chartsDivId);
     chartsDiv.parent = container;
@@ -47,12 +46,15 @@ function setup() {
     expRightMenu.addContent(new ExpThumbnail(expRightMenu.width, 70, expRightMenu.height, "../assets/changeExercise.png", expRightMenu.id, 1, function(){ return toggleMenu('varbtn', 'expRightMenu');}));
     expRightMenu.addContent(new ExpThumbnail(expRightMenu.width, 70, expRightMenu.height, "../assets/changeExercise.png", expRightMenu.id, 2, function(){ return toggleMenu('varbtn', 'expRightMenu');}));
 
-    positionChart = new Chart2D(1, 'line');
-    velocityChart = new Chart2D(2, 'velocity');
-    heightChart = new Chart2D(3, 'height');
+    charts.push(new Chart2D(1, 'position'));
+    charts.push(new Chart2D(2, 'velocity'));
+    charts.push(new Chart2D(3, 'height'));
+    charts.push(new Chart2D(4, 'height'));
+    i = 0;
 }
 
 function draw() {
+    i++;
     background(255);
     if(frameRate() < 30){
         console.log('drop');
@@ -64,14 +66,16 @@ function draw() {
     lowerMenu.display(exercise.energy.getPotential(), exercise.energy.getKinetic(),
         exercise.energy.getElastic(), exercise.energy.actualEnergy, exercise.energy.initialEnergy);
     varRightMenu.getElementInfo(0);
-    positionChart.addData();
-    velocityChart.addData();
-    heightChart.addData();
+    charts[0].addData(exercise.body.position.x);
+    charts[1].addData(exercise.energy.velocity);
+    charts[2].addData(exercise.energy.height);
+    charts[3].addData(exercise.energy.height);
 }
 
 function changeExc(height, radius, middlePathLength){
     //testing
     exercise = new Exercise({rampHeightLeft: height, radius: radius, middlePathLength: middlePathLength});
+    charts.map(c => c.resetChart());
 }
 
 function play(){

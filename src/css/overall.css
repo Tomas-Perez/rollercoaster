@@ -7,7 +7,7 @@ body{
 }
 
 .chartsDiv{
-    float: left;
+    float: none;
     margin-right: 20px;
 }
 

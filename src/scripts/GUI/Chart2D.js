@@ -1,9 +1,8 @@
-function Chart2D(number,type){
+function Chart2D(number,title){
     this.chartsWidth = 256;
     this.chartsHeight = 256;
     this.chartsDivId = "chartsDiv";
     this.id = "chartDiv " + number;
-    this.type = type;
 
     //unique div for a specific chart creation
     this.chartDiv = createDiv('');
@@ -62,47 +61,16 @@ function Chart2D(number,type){
             showLines: true,
         }
     };
-    this.chart = this.createChart(this.type);
+    this.chart = this.createChart(title);
 
 }
 
-Chart2D.prototype.createChart = function (type) {
-
-    switch (type) {
-        case 'line':
-            this.chartData.options.title.text = "position over time";
-            return new Chart(this.ctx, this.chartData);
-            break;
-
-        case 'velocity':
-            this.chartData.options.title.text = "velocity over time";
-            return new Chart(this.ctx, this.chartData);
-            break;
-
-        case 'height':
-            this.chartData.options.title.text = "height over time";
-            return new Chart(this.ctx, this.chartData);
-            break;
-    }
+Chart2D.prototype.createChart = function (title) {
+    this.chartData.options.title.text = title + " over time";
+    return new Chart(this.ctx, this.chartData);
 };
 
-Chart2D.prototype.addData = function (){
-    switch (this.type) {
-        case 'line':
-            this.updateChart(exercise.body.position.x);
-            break;
-
-        case 'velocity':
-            this.updateChart(exercise.energy.velocity);
-            break;
-
-        case 'height':
-            this.updateChart(exercise.energy.height);
-            break;
-    }
-};
-
-Chart2D.prototype.updateChart = function(data){
+Chart2D.prototype.addData = function (data){
     //intervals
     let interval = 20;
     let secondInFrames = 60;
@@ -119,5 +87,12 @@ Chart2D.prototype.updateChart = function(data){
         }
         else this.chartData.data.labels.push('');
     }
-    if (this.framesCounter % updateInterval === 0 && this.framesCounter < 320) this.chart.update();
+    if (this.framesCounter % updateInterval === 0 && this.framesCounter <= 320) this.chart.update();
+};
+
+Chart2D.prototype.resetChart = function(){
+    this.chartData.data.labels = [];
+    this.chartData.data.datasets[0].data = [];
+    this.framesCounter = 0;
+    this.secondsCounter = 0;
 };
