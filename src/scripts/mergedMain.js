@@ -73,7 +73,8 @@ function draw() {
 function changeExc(height, radius, middlePathLength){
     //testing
     exercise = new Exercise({rampHeightLeft: height, radius: radius, middlePathLength: middlePathLength});
-    charts.map(c => c.resetChart());
+    //charts.map(c => c.resetChart());
+    charts.forEach(c => c.resetChart());
 }
 
 function play(){

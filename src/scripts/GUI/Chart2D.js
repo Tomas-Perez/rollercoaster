@@ -61,33 +61,31 @@ function Chart2D(number,title){
             showLines: true,
         }
     };
-    this.chart = this.createChart(title);
-
+    this.chartData.options.title.text = title + " over time";
+    this.chart = new Chart(this.ctx, this.chartData);
+    this.run = true;
 }
 
-Chart2D.prototype.createChart = function (title) {
-    this.chartData.options.title.text = title + " over time";
-    return new Chart(this.ctx, this.chartData);
-};
-
 Chart2D.prototype.addData = function (data){
-    //intervals
-    let interval = 20;
-    let secondInFrames = 60;
-    let updateInterval = 60;
+    if(this.run) {
+        //intervals
+        let interval = 20;
+        let secondInFrames = 60;
+        let updateInterval = 60;
 
-    this.framesCounter++;
-    //push data every interval frames
-    if(this.framesCounter % interval === 0) {
-        this.chartData.data.datasets[0].data.push(data);
-        //push label every secondInFrames
-        this.secondsCounter++;
-        if(this.framesCounter % secondInFrames === 0){
-            this.chartData.data.labels.push(this.framesCounter/secondInFrames + 's');
+        this.framesCounter++;
+        //push data every interval frames
+        if (this.framesCounter % interval === 0) {
+            this.chartData.data.datasets[0].data.push(data);
+            //push label every secondInFrames
+            this.secondsCounter++;
+            if (this.framesCounter % secondInFrames === 0) {
+                this.chartData.data.labels.push(this.framesCounter / secondInFrames + 's');
+            }
+            else this.chartData.data.labels.push('');
         }
-        else this.chartData.data.labels.push('');
+        if (this.framesCounter % updateInterval === 0) this.chart.update();
     }
-    if (this.framesCounter % updateInterval === 0 && this.framesCounter <= 320) this.chart.update();
 };
 
 Chart2D.prototype.resetChart = function(){
@@ -95,4 +93,8 @@ Chart2D.prototype.resetChart = function(){
     this.chartData.data.datasets[0].data = [];
     this.framesCounter = 0;
     this.secondsCounter = 0;
+};
+
+Chart2D.prototype.done = function(){
+    this.run = false;
 };
