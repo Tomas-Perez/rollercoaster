@@ -13,7 +13,7 @@ function setup() {
     let canvasDivId = "canvasDiv";
     let chartsDivId = "chartsDiv";
     charts = [];
-    exercise = new Exercise({middlePathLength: 100});
+    exercise = new Exercise({middlePathLength: 100, cycleFinishedListener: stopCharts});
 
     //container formatting
     let container = document.getElementById(containerDivId);
@@ -69,7 +69,7 @@ function draw() {
 
 function changeExc(height, radius, middlePathLength){
     //testing
-    exercise = new Exercise({rampHeightLeft: height, radius: radius, middlePathLength: middlePathLength});
+    exercise = new Exercise({rampHeightLeft: height, radius: radius, middlePathLength: middlePathLength, cycleFinishedListener: stopCharts});
     //charts.map(c => c.resetChart());
     charts.forEach(c => c.resetChart());
 }
@@ -80,4 +80,8 @@ function play(){
 
 function pause(){
     exercise.pause();
+}
+
+function stopCharts(){
+    charts.forEach(chart => chart.done());
 }

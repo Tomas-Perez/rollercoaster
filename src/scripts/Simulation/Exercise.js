@@ -28,8 +28,9 @@ const Exercise = function(options){
     this.body.acceleration = new p5.Vector(0, gravity);
     this.body.listeners.push(this.railGuide.chooseTarget.bind(this.railGuide));
     this.body.listeners.push(this.updateBodyVelocity.bind(this));
-    if(options.startListener){
-        this.body.startListeners.push(options.startListener);
+    if(options.cycleFinishedListener){
+        this.cycleFinishedListener = options.cycleFinishedListener;
+        this.body.startListeners.push(this.cycleFinishedListener);
     }
 };
 
@@ -46,6 +47,7 @@ Exercise.prototype.run = function(width, height){
     if(this.update) {
         this.updateBodyVelocity();
         this.body.update();
+        if(this.energy.actualEnergy === 0) this.cycleFinishedListener();
     }
     this.cart.display(this.railGuide.direction > 0);
     //this.body.display();
