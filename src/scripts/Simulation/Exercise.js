@@ -26,8 +26,11 @@ const Exercise = function(options){
     );
 
     this.body.acceleration = new p5.Vector(0, gravity);
-    this.body.positionReachedListeners.push(this.railGuide.chooseTarget.bind(this.railGuide));
-    this.body.positionReachedListeners.push(this.updateBodyVelocity.bind(this));
+    this.body.listeners.push(this.railGuide.chooseTarget.bind(this.railGuide));
+    this.body.listeners.push(this.updateBodyVelocity.bind(this));
+    if(options.startListener){
+        this.body.startListeners.push(options.startListener);
+    }
 };
 
 Exercise.prototype.run = function(width, height){

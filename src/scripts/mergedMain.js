@@ -54,10 +54,7 @@ function setup() {
 
 function draw() {
     background(255);
-    if(frameRate() < 30){
-        console.log('drop');
-    }
-    console.log();
+    console.log(frameRate());
     push();
     exercise.run(width, height * (3/4));
     pop();

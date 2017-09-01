@@ -4,23 +4,26 @@
 
 const Body = function(position, mass){
     this.position = position;
+    this.start = position;
     this.mass = mass;
     this.velocity = 0;
     this.acceleration = new p5.Vector(0, 0);
     this.target = new p5.Vector(0, 0);
-    this.positionReachedListeners = [];
+    this.listeners = [];
+    this.startListeners = [];
 };
 
 Body.prototype.update = function () {
     if(this.velocity === 0) {
         this.position = p5.Vector.add(this.acceleration, this.position);
-        this.positionReachedListeners.forEach(func => func());
+        this.listeners.forEach(func => func());
     }
     let distanceTravelled = 0;
     let distanceToTarget = this.position.dist(this.target);
     while(this.velocity - distanceTravelled > distanceToTarget){
         this.position = this.target;
-        this.positionReachedListeners.forEach(func => func());
+        this.listeners.forEach(func => func());
+        if(this.start.equals(this.position)) this.startListeners.forEach(func => func());
         distanceTravelled += distanceToTarget;
         distanceToTarget = this.position.dist(this.target);
     }
@@ -34,17 +37,17 @@ Body.prototype.update = function () {
     const intMagnitude = int(this.velocity);
     const decimalMagnitude = this.velocity - intMagnitude;
     if(this.position.dist(this.target) < 1){
-        this.positionReachedListeners.forEach(func => func());
+        this.listener.forEach(func => func());
     }
     for(let i = 0; i < intMagnitude; i++){
         if(this.position.dist(this.target) < 1){
-            this.positionReachedListeners.forEach(func => func());
+            this.listener.forEach(func => func());
         }
         const targetVector = p5.Vector.fromAngle(this.getTargetHeading()).normalize();
         this.position = p5.Vector.add(targetVector, this.position);
     }
     if(this.position.dist(this.target) < 1){
-        this.positionReachedListeners.forEach(func => func());
+        this.listener.forEach(func => func());
     }
     const decimalVector = p5.Vector.fromAngle(this.getTargetHeading()).setMag(decimalMagnitude);
     this.position = p5.Vector.add(decimalVector, this.position);
@@ -67,4 +70,10 @@ Body.prototype.targetProjection = function(vector){
     const numerator = p5.Vector.dot(targetVector, vector);
     const denominator = p5.Vector.dot(targetVector, targetVector);
     return p5.Vector.mult(targetVector, numerator / denominator);
+};
+
+Body.prototype.setStart = function(initialPos, target){
+    this.position = initialPos;
+    this.start = initialPos;
+    this.target = target;
 };

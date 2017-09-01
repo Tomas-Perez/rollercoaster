@@ -7,8 +7,8 @@ const RailGuide = function(body, railVertices){
     this.railVertices = railVertices;
     this.target = 0;
     this.direction = 1;
-    this.body.position = this.railVertices[this.target];
-    this.body.target = this.railVertices[this.target];
+    this.body.setStart(this.railVertices[this.target], this.railVertices[this.target]);
+    this.start = this.body.target;
 };
 
 RailGuide.prototype.chooseTarget = function(){
