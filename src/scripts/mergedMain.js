@@ -53,7 +53,6 @@ function setup() {
 }
 
 function draw() {
-    i++;
     background(255);
     if(frameRate() < 30){
         console.log('drop');
