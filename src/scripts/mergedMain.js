@@ -3,7 +3,7 @@ let lowerMenu;
 let varRightMenu;
 let expRightMenu;
 let charts;
-let i;
+
 function setup() {
     let width = 1024;
     let height = 768;
@@ -50,7 +50,6 @@ function setup() {
     charts.push(new Chart2D(2, 'velocity'));
     charts.push(new Chart2D(3, 'height'));
     charts.push(new Chart2D(4, 'height'));
-    i = 0;
 }
 
 function draw() {
