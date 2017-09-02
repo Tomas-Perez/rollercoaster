@@ -35,7 +35,7 @@ function Chart2D(number,title){
                 label: '',
                 data: [],
                 backgroundColor: [
-                    'rgba(179, 229, 252, 0.2)',
+                    'rgba(179, 229, 252, 0.7)',
                 ],
                 borderColor: [
                     'rgba(179, 229, 252, 1)',
@@ -103,5 +103,6 @@ Chart2D.prototype.resetChart = function(){
 };
 
 Chart2D.prototype.done = function(){
+    this.chart.update();
     this.run = false;
 };

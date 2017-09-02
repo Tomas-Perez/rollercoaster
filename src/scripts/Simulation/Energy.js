@@ -10,15 +10,20 @@ const Energy = function(mass, gravity, springConst, height, velocity, springLeng
     this.velocity = velocity;
     this.springLength = springLength;
     let elasticEnergy = this.calculateElastic(springLength);
-    let potentialEnergy = this.calculatePotential(height);
+    let potentialEnergy = this.calculatePotential(height, true);
     let kineticEnergy = this.calculateKinetic(velocity);
     this.actualEnergy = elasticEnergy + potentialEnergy + kineticEnergy;
     this.initialEnergy = this.actualEnergy;
+    this.stuck = false;
 };
 
-Energy.prototype.calculatePotential = function(height){
+Energy.prototype.calculatePotential = function(height, firstTime){
     let absoluteGravity = Math.abs(this.gravity);
-    return this.mass * absoluteGravity * height;
+    let apparentPotential = this.mass * absoluteGravity * height;
+    if(firstTime) return apparentPotential;
+    let actualPotential = Math.min(apparentPotential, this.actualEnergy);
+    this.height = (actualPotential / this.mass) / absoluteGravity;
+    return actualPotential;
 };
 
 Energy.prototype.calculateKinetic = function(velocity){
@@ -34,10 +39,18 @@ Energy.prototype.calculateVelocity = function(kineticEnergy){
 };
 
 Energy.prototype.updateVelocity = function(height, springLength){
-    this.height = height;
-    this.springLength = springLength;
-    const kineticEnergy = this.actualEnergy - this.getPotential() - this.getElastic();
-    this.velocity = kineticEnergy > 0 ? this.calculateVelocity(kineticEnergy) : 0;
+    if(this.actualEnergy > 0) {
+        this.height = height;
+        if(this.stuck){
+            this.height -= 0.1;
+        }
+        this.stuck = false;
+        this.springLength = springLength;
+        const kineticEnergy = this.actualEnergy - this.getPotential() - this.getElastic();
+        this.velocity = kineticEnergy > 0 ? this.calculateVelocity(kineticEnergy) : 0;
+        if(this.velocity === 0) this.stuck = true;
+    }
+    else this.velocity = 0;
 
     return this.velocity;
 };
@@ -52,4 +65,9 @@ Energy.prototype.getElastic = function(){
 
 Energy.prototype.getKinetic = function(){
     return this.calculateKinetic(this.velocity);
+};
+
+Energy.prototype.updateEnergy = function(distanceTimesFriction){
+    const frictionWork = distanceTimesFriction * this.mass * this.gravity;
+    this.actualEnergy = Math.max(this.actualEnergy - frictionWork, 0);
 };

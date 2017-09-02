@@ -11,11 +11,13 @@ function LowerMenu(x, y, width, height, color, parent, playFun, pauseFun) {
 }
 
 LowerMenu.prototype.display = function(potentialEnergy, kineticEnergy, elasticEnergy, mechanicEnergy, initialEnergy){
+    push();
     let color = this.color;
     let menuColor = color;
     fill(menuColor[0], menuColor[1], menuColor[2]);
     rect(this.x, this.y, this.width, this.height);
     this.bars(potentialEnergy, kineticEnergy, elasticEnergy, mechanicEnergy, initialEnergy);
+    pop();
 };
 
 LowerMenu.prototype.bars = function (potentialEnergy, kineticEnergy, elasticEnergy, mechanicalEnergy, initialEnergy) {

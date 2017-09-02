@@ -12,8 +12,9 @@ function setup() {
     let containerDivId = "container";
     let canvasDivId = "canvasDiv";
     let chartsDivId = "chartsDiv";
+
     charts = [];
-    exercise = new Exercise({middlePathLength: 100, cycleFinishedListener: stopCharts});
+    exercise = new Exercise({middlePathLength: 100, cycleFinishedListener: stopCharts, friction: 0.7});
 
     //container formatting
     let container = document.getElementById(containerDivId);
@@ -54,10 +55,7 @@ function setup() {
 
 function draw() {
     background(255);
-    console.log(frameRate());
-    push();
     exercise.run(width, height * (3/4));
-    pop();
     lowerMenu.display(exercise.energy.getPotential(), exercise.energy.getKinetic(),
         exercise.energy.getElastic(), exercise.energy.actualEnergy, exercise.energy.initialEnergy);
     varRightMenu.getElementInfo(0);
@@ -65,6 +63,7 @@ function draw() {
     charts[1].addData(exercise.energy.velocity);
     charts[2].addData(exercise.energy.height);
     charts[3].addData(exercise.energy.height);
+    text(frameRate().toFixed(0), 1010, 575);
 }
 
 function changeExc(height, radius, middlePathLength){

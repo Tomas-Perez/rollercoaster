@@ -1,4 +1,4 @@
-const Ramp = function(leftHeight, rightHeight, radius, color, middleLength){
+const Ramp = function(leftHeight, middleLength, friction, rightHeight, radius, color){
     this.vertices = [];
     this.shapes = [];
     this.color = color;
@@ -26,11 +26,13 @@ const Ramp = function(leftHeight, rightHeight, radius, color, middleLength){
     for(let i = 0; i < paths.length; i++) {
         let pathLength = Raphael.getTotalLength(paths[i]);
         if(pathLength > 0) {
+            let vectorFriction = 0;
             if(paths[i] === loopTop) this.loopIndex = this.shapes.length;
+            else if(paths[i] === middlePath) vectorFriction = friction;
             let shape = [];
             for (let c = 0; c < pathLength; c += pathResolution) {
                 const point = Raphael.getPointAtLength(paths[i], c);
-                const vector = new p5.Vector(point.x, point.y);
+                const vector = new PathVector(point.x, point.y, vectorFriction);
                 if (vector.y > this.lowestPoint || !this.lowestPoint) this.lowestPoint = vector.y;
                 if (vector.y < this.highestPoint || !this.highestPoint) this.highestPoint = vector.y;
                 if (vector.x > this.mostRightPoint || !this.mostRightPoint) this.mostRightPoint = vector.x;
@@ -39,13 +41,13 @@ const Ramp = function(leftHeight, rightHeight, radius, color, middleLength){
                 shape.push(vector);
             }
             const lastPoint = Raphael.getPointAtLength(paths[i], pathLength - 1);
-            const vector = new p5.Vector(lastPoint.x, lastPoint.y);
+            const vector = new PathVector(lastPoint.x, lastPoint.y, 0);
             shape.push(vector);
             this.shapes.push(shape);
         }
     }
     let lastCartPathPoint = Raphael.getPointAtLength(endPath, Raphael.getTotalLength(endPath) - 1);
-    this.vertices.push(new p5.Vector(lastCartPathPoint.x, lastCartPathPoint.y));
+    this.vertices.push(new PathVector(lastCartPathPoint.x, lastCartPathPoint.y, 0));
 
     this.height = this.lowestPoint - this.highestPoint + this.heightBuffer;
     this.width = this.mostRightPoint - this.mostLeftPoint;

@@ -5,12 +5,15 @@ const Exercise = function(options){
     const gravity = options.gravity || 10/36; //if(1 pixel == 1cm) 1 == 36 m/s^2
 
     this.update = true;
+    this.finished = false;
+
     this.ramp = new Ramp(
         options.rampHeightLeft || 500,
+        options.middlePathLength || 0,
+        options.friction || 0,
         options.rampHeightRight || 500,
         options.radius || 0,
-        options.rampColor || '#795548',
-        options.middlePathLength || 0
+        options.rampColor || '#795548'
     );
     this.body = new Body(new p5.Vector(0,0), options.mass || 50);
     this.railGuide = new RailGuide(this.body, this.ramp.vertices);
@@ -27,7 +30,8 @@ const Exercise = function(options){
 
     this.body.acceleration = new p5.Vector(0, gravity);
     this.body.listeners.push(this.railGuide.chooseTarget.bind(this.railGuide));
-    this.body.listeners.push(this.updateBodyVelocity.bind(this));
+    this.body.updateListeners.push(this.energy.updateEnergy.bind(this.energy));
+    this.body.updateListeners.push(this.updateBodyVelocity.bind(this));
     if(options.cycleFinishedListener){
         this.cycleFinishedListener = options.cycleFinishedListener;
         this.body.startListeners.push(this.cycleFinishedListener);
@@ -47,7 +51,11 @@ Exercise.prototype.run = function(width, height){
     if(this.update) {
         this.updateBodyVelocity();
         this.body.update();
-        if(this.energy.actualEnergy === 0) this.cycleFinishedListener();
+        if(this.energy.actualEnergy === 0){
+            this.cycleFinishedListener();
+            this.update = false;
+            this.finished = true;
+        }
     }
     this.cart.display(this.railGuide.direction > 0);
     //this.body.display();
@@ -55,14 +63,24 @@ Exercise.prototype.run = function(width, height){
 };
 
 Exercise.prototype.pause = function(){
-    this.update = false;
+    if (!this.finished) {
+        this.update = false;
+    }
 };
 
 Exercise.prototype.play = function(){
-    this.update = true;
+    if (!this.finished) {
+        this.update = true;
+    }
 };
 
 Exercise.prototype.updateBodyVelocity = function () {
     this.body.velocity = this.energy.updateVelocity(this.ramp.lowestPoint - this.body.position.y, 0);
+    this.body.position.y = this.ramp.lowestPoint - this.energy.height;
+    if(this.energy.stuck) this.railGuide.chooseTarget();
 };
 
+Exercise.prototype.finish = function(){
+    this.finished = true;
+    this.update = false;
+};
