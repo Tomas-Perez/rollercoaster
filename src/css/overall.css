@@ -27,9 +27,14 @@ body{
     position: relative;
 }
 
-.rightMenu{
+.rightMenuDiv{
     position: relative;
     float: right;
+    z-index: 9;
+}
+
+.rightMenu{
+    position: absolute;
     z-index: 9;
     background-color: white;
     display: none;
