@@ -68,10 +68,12 @@ function draw() {
     lowerMenu.display(exercise.energy.getPotential(), exercise.energy.getKinetic(),
         exercise.energy.getElastic(), exercise.energy.actualEnergy, exercise.energy.initialEnergy);
     varRightMenu.getElementInfo(0);
-    charts[0].addData(exercise.body.position.x);
-    charts[1].addData(exercise.energy.velocity);
-    charts[2].addData(exercise.energy.height);
-    charts[3].addData(exercise.energy.height);
+    if(exercise.update) {
+        charts[0].addData(exercise.body.position.x);
+        charts[1].addData(exercise.energy.velocity);
+        charts[2].addData(exercise.energy.height);
+        charts[3].addData(exercise.energy.height);
+    }
     text(frameRate().toFixed(0), 1010, 575);
 }
 
