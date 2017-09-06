@@ -1,4 +1,4 @@
-function RightMenu(width, height, id, classs, parent, title) {
+function RightMenu(width, height, id, classs, parent, title, zind) {
     this.width = width;
     this.height = height;
     this.id = id;
