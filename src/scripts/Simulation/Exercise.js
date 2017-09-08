@@ -74,7 +74,7 @@ Exercise.prototype = {
             }
         }
         this.cart.display(this.body.position.x, this.body.position.y, this.railGuide.getTrajectory());
-        this.body.display();
+        //this.body.display();
         pop();
     },
 

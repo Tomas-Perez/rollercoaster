@@ -13,7 +13,6 @@ const Body = function(position, mass){
     this.startListeners = [];
     this.updateListeners = [];
     this.actualFriction = 0;
-    this.kickStarted = false;
 };
 
 Body.prototype.update = function () {
