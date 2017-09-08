@@ -30,6 +30,18 @@ RailGuide.prototype.chooseTarget = function(){
     this.body.target = this.railVertices[this.target];
 };
 
+RailGuide.prototype.getTrajectory = function(){
+    let from = this.railVertices[this.target];
+    let to = this.railVertices[this.target];
+    if(this.target > 0){
+        from = this.railVertices[this.target - 1];
+    }
+    if(this.target < this.railVertices.length - 1) {
+        to = this.railVertices[this.target + 1];
+    }
+    return p5.Vector.sub(to, from);
+};
+
 /*
 RailGuide.prototype.getTargetVector = function(){
     return p5.Vector.sub(this.railVertices[this.target], this.body.position);

@@ -18,6 +18,12 @@ let spring;
 function setup(){
     createCanvas(1024, 576);
     spring = new Spring(500, 250, 100, 25);
+    let whatever;
+    console.log(whatever || 500);
+    whatever = 0;
+    console.log(whatever || 500);
+    whatever = 1;
+    console.log(whatever || 500);
     //exercise = new Exercise({rampHeightLeft: 249, radius: 100});
 }
 
