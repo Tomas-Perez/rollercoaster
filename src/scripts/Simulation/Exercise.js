@@ -16,7 +16,7 @@ const Exercise = function(options = {}){
 
     const actualOptions = Object.assign({}, defaults, options);
 
-    const img = loadImage('../assets/cartDemo.png');
+    const img = loadImage('./assets/cartDemo.png');
     const gravity = actualOptions.gravity;
 
     this.update = true;

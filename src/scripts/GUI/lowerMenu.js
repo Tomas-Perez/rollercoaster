@@ -4,10 +4,30 @@ function LowerMenu(x, y, width, height, color, parent, playFun, pauseFun) {
     this.y = y;
     this.height = height;
     this.width = width;
-    this.playBtn = new ImageButton(x + (width*0.03), y + (height/3), 70, 70, "../assets/play.png", parent, 'imageButton', 'playbtn', playFun, "../assets/playHover.png", "../assets/playPressed.png");
-    this.pauseBtn = new ImageButton(x + (width*0.04), y + (height/3), 70, 70, "../assets/pause.png", parent, 'imageButton', 'pausebtn', pauseFun, "../assets/pauseHover.png", "../assets/pausePressed.png");
-    this.varBtn = new ImageButton(x + (width*0.05), y + (height/3), 70, 70, "../assets/changeExercise.png", parent, 'imageButton', 'varbtn', function(){ return toggleMenu('varbtn', 'expRightMenu', "../assets/changeExercise.png"); }, "../assets/changeExerciseHover.png", "../assets/changeExercisePressed.png");
-    this.expBtn = new ImageButton(x + (width*0.06), y + (height/3), 70, 70, "../assets/variables.png", parent, 'imageButton', 'expbtn', function(){ return toggleMenu('expbtn', 'varRightMenu', "../assets/variables.png"); }, "../assets/variablesHover.png", "../assets/variablesPressed.png");
+    const playPaths = {
+        reg: './assets/play.png',
+        hover:  './assets/playHover.png',
+        click:  './assets/playPressed.png'
+    };
+    const pausePaths = {
+        reg: "./assets/pause.png",
+        hover:  './assets/pauseHover.png',
+        click:  './assets/playPressed.png'
+    };
+    const changeExcButtonPaths = {
+        reg: "./assets/changeExercise.png",
+        hover:  './assets/changeExerciseHover.png',
+        click:  './assets/changeExercisePressed.png'
+    };
+    const variablesPaths = {
+        reg: "./assets/variables.png",
+        hover:  './assets/variablesHover.png',
+        click:  './assets/variablesPressed.png'
+    };
+    this.playBtn = new ImageButton(x + (width*0.03), y + (height/3), 70, 70, playPaths.reg, parent, 'imageButton', 'playbtn', playFun, playPaths.hover, playPaths.click);
+    this.pauseBtn = new ImageButton(x + (width*0.04), y + (height/3), 70, 70, pausePaths.reg, parent, 'imageButton', 'pausebtn', pauseFun, pausePaths.hover, pausePaths.click);
+    this.varBtn = new ImageButton(x + (width*0.05), y + (height/3), 70, 70, changeExcButtonPaths.reg, parent, 'imageButton', 'varbtn', function(){ return toggleMenu('varbtn', 'expRightMenu', changeExcButtonPaths.reg); }, changeExcButtonPaths.hover, changeExcButtonPaths.click);
+    this.expBtn = new ImageButton(x + (width*0.06), y + (height/3), 70, 70, variablesPaths.reg, parent, 'imageButton', 'expbtn', function(){ return toggleMenu('expbtn', 'varRightMenu', variablesPaths.reg); }, variablesPaths.hover, variablesPaths.click);
 }
 
 LowerMenu.prototype.display = function(potentialEnergy, kineticEnergy, elasticEnergy, mechanicEnergy, initialEnergy){
