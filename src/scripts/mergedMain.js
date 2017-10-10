@@ -15,7 +15,7 @@ function setup() {
     let rightMenuDiv;
 
     charts = [];
-    exercise = new Exercise({middlePathLength: 100, cycleFinishedListener: stopCharts, friction: 0.7});
+    exercise = new Exercise({middlePathLength: 100, friction: 0.7}, stopCharts);
 
     //container formatting
     let container = document.getElementById(containerDivId);
@@ -65,22 +65,27 @@ function setup() {
 function draw() {
     background(255);
     exercise.run(width, height * (3/4));
-    lowerMenu.display(exercise.energy.getPotential(), exercise.energy.getKinetic(),
-        exercise.energy.getElastic(), exercise.energy.actualEnergy, exercise.energy.initialEnergy);
+    const energies = energiesConvertToReal({
+        kinetic: exercise.energy.getKinetic(),
+        potential: exercise.energy.getPotential(),
+        elastic: exercise.energy.getElastic(),
+        initial:  exercise.energy.initialEnergy,
+        current: exercise.energy.actualEnergy
+    });
+    lowerMenu.display(energies.potential, energies.kinetic,
+        energies.elastic, energies.current, energies.initial);
     varRightMenu.getElementInfo(0);
     if(exercise.update) {
-        charts[0].addData(exercise.body.position.x);
-        charts[1].addData(exercise.energy.velocity);
-        charts[2].addData(exercise.energy.height);
-        charts[3].addData(exercise.energy.height);
+        charts[0].addData(convertLongitudeToReal(exercise.body.position.x));
+        charts[1].addData(convertVelocityToReal(exercise.energy.velocity));
+        charts[2].addData(convertLongitudeToReal(exercise.energy.height));
+        charts[3].addData(convertLongitudeToReal(exercise.energy.height));
     }
     text(frameRate().toFixed(0), 1010, 575);
 }
 
-function changeExc(height, radius, middlePathLength){
-    //testing
-    exercise = new Exercise({rampHeightLeft: height, radius: radius, middlePathLength: middlePathLength, cycleFinishedListener: stopCharts});
-    //charts.map(c => c.resetChart());
+function changeExc(variables){
+    exercise = new Exercise(initVarsConvertToVirtual(variables), stopCharts);
     charts.forEach(c => c.resetChart());
 }
 

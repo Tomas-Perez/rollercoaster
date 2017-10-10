@@ -1,4 +1,5 @@
-const Exercise = function(options = {}){
+const Exercise = function(options = {}, cycleFinishedCallback){
+    console.log(options);
     const defaults = {
         rampHeightLeft: 500,
         middlePathLength: 0,
@@ -11,11 +12,10 @@ const Exercise = function(options = {}){
         velocity: 0,
         springLength: 0,
         mass: 50,
-        cycleFinishedListener: function () {}
     };
 
     const actualOptions = Object.assign({}, defaults, options);
-
+    console.log(actualOptions);
     const img = loadImage('./assets/cartDemo.png');
     const gravity = actualOptions.gravity;
 
@@ -47,10 +47,8 @@ const Exercise = function(options = {}){
     this.body.listeners.push(this.railGuide.chooseTarget.bind(this.railGuide));
     this.body.updateListeners.push(this.energy.updateEnergy.bind(this.energy));
     this.body.updateListeners.push(this.updateBodyVelocity.bind(this));
-    if(actualOptions.cycleFinishedListener){
-        this.cycleFinishedListener = actualOptions.cycleFinishedListener;
-        this.body.startListeners.push(this.cycleFinishedListener);
-    }
+    this.cycleFinishedListener = cycleFinishedCallback;
+    this.body.startListeners.push(this.cycleFinishedListener);
 };
 
 Exercise.prototype = {
