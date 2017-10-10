@@ -1,4 +1,4 @@
-function Variable(name, unit, parentWidth, parentHeight, parent, number){
+function Variable(name, unit, parentWidth, parentHeight, parent, number, value){
     this.div = createDiv('');
     this.div.attribute('id', 'variableDiv' + number);
     this.div.addClass('variableDiv');
@@ -11,6 +11,7 @@ function Variable(name, unit, parentWidth, parentHeight, parent, number){
     this.textBox.parent('variableDiv' + number);
     this.textBox.addClass('variableTxtBox');
     this.textBox.attribute('id', 'varTxt' + number);
+    this.textBox.value(value);
     this.unit = createP(unit);
     this.unit.parent('variableDiv' + number);
     this.unit.addClass('variableUnit');
@@ -24,4 +25,4 @@ function Variable(name, unit, parentWidth, parentHeight, parent, number){
 
 Variable.prototype.getValue = function () {
     return this.textBox.value();
-}
+};

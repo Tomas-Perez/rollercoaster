@@ -12,7 +12,7 @@ function LowerMenu(x, y, width, height, color, parent, playFun, pauseFun) {
     const pausePaths = {
         reg: "./assets/pause.png",
         hover:  './assets/pauseHover.png',
-        click:  './assets/playPressed.png'
+        click:  './assets/pausePressed.png'
     };
     const changeExcButtonPaths = {
         reg: "./assets/changeExercise.png",

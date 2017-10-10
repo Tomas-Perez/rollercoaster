@@ -48,15 +48,23 @@ function setup() {
 
     lowerMenu = new LowerMenu(-1, canvas.height*3/4, canvas.width+1, canvas.height*1/4, [179, 229, 252], canvasDiv, play, pause);
 
-    varRightMenu = new RightMenu(canvas.width*1/4, canvas.height,"varRightMenu", "rightMenu", "rightMenuDiv", "Variables");
-    varRightMenu.addContent(new Variable("gravity", "m", varRightMenu.width, varRightMenu.height, varRightMenu.id, 0));
-    varRightMenu.addContent(new Variable("gravity", "m", varRightMenu.width, varRightMenu.height, varRightMenu.id, 1));
+    varRightMenu = new RightMenu(canvas.width*1/4, canvas.height,"varRightMenu", "rightMenu", "rightMenuDiv", "Variables", true);
 
-    expRightMenu = new RightMenu(canvas.width*1/4, canvas.height, "expRightMenu", "rightMenu", "rightMenuDiv", "Experiences");
-    expRightMenu.addContent(new ExpThumbnail(expRightMenu.width, 70, expRightMenu.height, "./assets/ramp_button_1.jpg", expRightMenu.id, 0, function(){ return toggleMenu('varbtn', 'expRightMenu');}));
-    expRightMenu.addContent(new ExpThumbnail(expRightMenu.width, 70, expRightMenu.height, "./assets/ramp_button_2.jpg", expRightMenu.id, 1, function(){ return toggleMenu('varbtn', 'expRightMenu');}));
-    expRightMenu.addContent(new ExpThumbnail(expRightMenu.width, 70, expRightMenu.height, "./assets/ramp_button_3.jpg", expRightMenu.id, 2, function(){ return toggleMenu('varbtn', 'expRightMenu');}));
-    expRightMenu.addContent(new ExpThumbnail(expRightMenu.width, 70, expRightMenu.height, "./assets/ramp_button_4.jpg", expRightMenu.id, 3, function(){ return toggleMenu('varbtn', 'expRightMenu');}));
+    varRightMenu.addContent(new Variable("Mass", "m", varRightMenu.width, varRightMenu.height, varRightMenu.contentDivId, 0));
+    varRightMenu.addContent(new Variable("Gravity", "m", varRightMenu.width, varRightMenu.height, varRightMenu.contentDivId, 1));
+    varRightMenu.addContent(new Variable("Velocity", "m", varRightMenu.width, varRightMenu.height, varRightMenu.contentDivId, 2));
+    varRightMenu.addContent(new Variable("Friction", "m", varRightMenu.width, varRightMenu.height, varRightMenu.contentDivId, 3));
+    varRightMenu.addContent(new Variable("Spring K", "m", varRightMenu.width, varRightMenu.height, varRightMenu.contentDivId, 4));
+    varRightMenu.addContent(new Variable("Spring length", "m", varRightMenu.width, varRightMenu.height, varRightMenu.contentDivId, 5));
+    varRightMenu.addContent(new Variable("Radius", "m", varRightMenu.width, varRightMenu.height, varRightMenu.contentDivId, 6));
+    varRightMenu.addContent(new Variable("Middle path", "m", varRightMenu.width, varRightMenu.height, varRightMenu.contentDivId, 7));
+    varRightMenu.addContent(new Variable("Ramp l-height", "m", varRightMenu.width, varRightMenu.height, varRightMenu.contentDivId, 8));
+    varRightMenu.addContent(new Variable("Ramp r-height", "m", varRightMenu.width, varRightMenu.height, varRightMenu.contentDivId, 9));
+
+    expRightMenu = new RightMenu(canvas.width*1/4, canvas.height, "expRightMenu", "rightMenu", "rightMenuDiv", "Experiences", false);
+    expRightMenu.addContent(new ExpThumbnail(expRightMenu.width, 70, expRightMenu.height, "./assets/changeExercise.png", expRightMenu.contentDivId, 0, function(){ return toggleMenu('varbtn', 'expRightMenu');}));
+    expRightMenu.addContent(new ExpThumbnail(expRightMenu.width, 70, expRightMenu.height, "./assets/changeExercise.png", expRightMenu.contentDivId, 1, function(){ return toggleMenu('varbtn', 'expRightMenu');}));
+    expRightMenu.addContent(new ExpThumbnail(expRightMenu.width, 70, expRightMenu.height, "./assets/changeExercise.png", expRightMenu.contentDivId, 2, function(){ return toggleMenu('varbtn', 'expRightMenu');}));
 
     charts.push(new Chart2D(1, 'position'));
     charts.push(new Chart2D(2, 'velocity'));
