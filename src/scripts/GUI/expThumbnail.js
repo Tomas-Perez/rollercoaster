@@ -6,5 +6,5 @@ function ExpThumbnail(width, height, parentHeight, path, parent, number, onClick
     this.div.style('width', width + 'px');
     this.div.style('height', height + 'px');
     this.div.style('margin', parentHeight*0.01 + 'px' + ' 0px');
-    this.imageButton = new ImageButton(0, 0, 155, 70, path, 'expImgDiv'+number, 'expImg', 'expImg' + number, onClick)
+    this.imageButton = new ImageButton(0, 0, 155 , 70, path, 'expImgDiv'+number, 'expImg', 'expImg' + number, onClick)
 }

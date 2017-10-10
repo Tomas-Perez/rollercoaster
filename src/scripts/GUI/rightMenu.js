@@ -24,7 +24,7 @@ function RightMenu(width, height, id, classs, parent, title, okBool) {
     this.content = [];
 
     if (okBool) {
-        this.okButton = new ImageButton(100, 0, 100, 70, "./assets/variables.png", this.id,
+        this.okButton = new ImageButton(100, 0, 80, 50, "./assets/accept_button.jpg", this.id,
             'rightMenuOkButton', 'rightMenuOkButtonId', function(){
                     toggleMenu('rightMenuOkButtonId', 'varRightMenu');
                     this.rightMenuOk(this.content)
