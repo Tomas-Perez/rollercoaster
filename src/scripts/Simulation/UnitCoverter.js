@@ -4,99 +4,105 @@
  * @author Tomas Perez Molina
  */
 
-const meterToPixel = 100;
-const meterSecToPixelFrame = 1/6;
-const meterSecSqToPixelFrameSq = 1/36;
-const kgToVirtualMass = 1;
-const constSpringToVirtualConst = 1;
-const frictionConstToVirtualConst = 1;
-const jouleToVirtualJoule = 1/6;
+const UnitConverter = (function () {
+    const self = {};
 
-const pixelToMeter = 1/meterToPixel;
-const pixelFrameToMeterSec = 1/meterSecToPixelFrame;
-const pixelFrameSqToMeterSecSq = 1/meterSecSqToPixelFrameSq;
-const virtualMassToKg = 1/kgToVirtualMass;
-const virtualConstToConstSpring = 1/constSpringToVirtualConst;
-const virtualConstToFrictionConst = 1/frictionConstToVirtualConst;
-const virtualJouleToJoule = 1/jouleToVirtualJoule;
+    const meterToPixel = 100;
+    const meterSecToPixelFrame = 1 / 6;
+    const meterSecSqToPixelFrameSq = 1 / 36;
+    const kgToVirtualMass = 1;
+    const constSpringToVirtualConst = 1;
+    const frictionConstToVirtualConst = 1;
+    const jouleToVirtualJoule = 1 / 6;
 
-const initVarsConvertToVirtual = function(variables = {}){
-    const result = {
-        rampHeightLeft: convertLongitudeToVirtual(variables.rampHeightLeft),
-        middlePathLength: convertLongitudeToVirtual(variables.middlePathLength),
-        friction: convertFrictionToVirtual(variables.friction),
-        rampHeightRight: convertLongitudeToVirtual(variables.rampHeightRight),
-        radius: convertLongitudeToVirtual(variables.radius),
-        gravity: convertAccToVirtual(variables.gravity),
-        springConst: convertSpringConstToVirtual(variables.springConst),
-        velocity: convertVelocityToVirtual(variables.velocity),
-        springLength: convertLongitudeToVirtual(variables.springLength),
-        mass: convertMassToVirtual(variables.mass),
+    const pixelToMeter = 1 / meterToPixel;
+    const pixelFrameToMeterSec = 1 / meterSecToPixelFrame;
+    const pixelFrameSqToMeterSecSq = 1 / meterSecSqToPixelFrameSq;
+    const virtualMassToKg = 1 / kgToVirtualMass;
+    const virtualConstToConstSpring = 1 / constSpringToVirtualConst;
+    const virtualConstToFrictionConst = 1 / frictionConstToVirtualConst;
+    const virtualJouleToJoule = 1 / jouleToVirtualJoule;
+
+    self.initVarsConvertToVirtual = function (variables = {}) {
+        const result = {
+            rampHeightLeft: self.convertLongitudeToVirtual(variables.rampHeightLeft),
+            middlePathLength: self.convertLongitudeToVirtual(variables.middlePathLength),
+            friction: self.convertFrictionToVirtual(variables.friction),
+            rampHeightRight: self.convertLongitudeToVirtual(variables.rampHeightRight),
+            radius: self.convertLongitudeToVirtual(variables.radius),
+            gravity: self.convertAccToVirtual(variables.gravity),
+            springConst: self.convertSpringConstToVirtual(variables.springConst),
+            velocity: self.convertVelocityToVirtual(variables.velocity),
+            springLength: self.convertLongitudeToVirtual(variables.springLength),
+            mass: self.convertMassToVirtual(variables.mass),
+        };
+        cleanObject(result);
+        return result;
     };
-    cleanObject(result);
-    return result;
-};
 
-const energiesConvertToVirtual = function(energies){
-    const result = {
-        kinetic: convertEnergyToVirtual(energies.kinetic),
-        elastic: convertEnergyToVirtual(energies.elastic),
-        potential: convertEnergyToVirtual(energies.potential),
-        initial: convertEnergyToVirtual(energies.initial),
-        current: convertEnergyToVirtual(energies.current)
+    self.energiesConvertToVirtual = function (energies) {
+        const result = {
+            kinetic: self.convertEnergyToVirtual(energies.kinetic),
+            elastic: self.convertEnergyToVirtual(energies.elastic),
+            potential: self.convertEnergyToVirtual(energies.potential),
+            initial: self.convertEnergyToVirtual(energies.initial),
+            current: self.convertEnergyToVirtual(energies.current)
+        };
+        cleanObject(result);
+        return result;
     };
-    cleanObject(result);
-    return result;
-};
 
-const initVarsConvertToReal = function(variables){
-    const result = {
-        rampHeightLeft: convertLongitudeToReal(variables.rampHeightLeft),
-        middlePathLength: convertLongitudeToReal(variables.middlePathLength),
-        friction: convertFrictionToReal(variables.friction),
-        rampHeightRight: convertLongitudeToReal(variables.rampHeightRight),
-        radius: convertLongitudeToReal(variables.radius),
-        gravity: convertAccToReal(variables.gravity),
-        springConst: convertSpringConstToReal(variables.springConst),
-        velocity: convertVelocityToReal(variables.velocity),
-        springLength: convertLongitudeToReal(variables.springLength),
-        mass: convertMassToReal(variables.mass),
+    self.initVarsConvertToReal = function (variables) {
+        const result = {
+            rampHeightLeft: self.convertLongitudeToReal(variables.rampHeightLeft),
+            middlePathLength: self.convertLongitudeToReal(variables.middlePathLength),
+            friction: self.convertFrictionToReal(variables.friction),
+            rampHeightRight: self.convertLongitudeToReal(variables.rampHeightRight),
+            radius: self.convertLongitudeToReal(variables.radius),
+            gravity: self.convertAccToReal(variables.gravity),
+            springConst: self.convertSpringConstToReal(variables.springConst),
+            velocity: self.convertVelocityToReal(variables.velocity),
+            springLength: self.convertLongitudeToReal(variables.springLength),
+            mass: self.convertMassToReal(variables.mass),
+        };
+        cleanObject(result);
+        return result;
     };
-    cleanObject(result);
-    return result;
-};
 
-const energiesConvertToReal = function(energies){
-    const result = {
-        kinetic: convertEnergyToReal(energies.kinetic),
-        elastic: convertEnergyToReal(energies.elastic),
-        potential: convertEnergyToReal(energies.potential),
-        initial: convertEnergyToReal(energies.initial),
-        current: convertEnergyToReal(energies.current)
+    self.energiesConvertToReal = function (energies) {
+        const result = {
+            kinetic: self.convertEnergyToReal(energies.kinetic),
+            elastic: self.convertEnergyToReal(energies.elastic),
+            potential: self.convertEnergyToReal(energies.potential),
+            initial: self.convertEnergyToReal(energies.initial),
+            current: self.convertEnergyToReal(energies.current)
+        };
+        cleanObject(result);
+        return result;
     };
-    cleanObject(result);
-    return result;
-};
 
-const convert = (x, ratio) => {
-    return x * ratio;
-};
+    const convert = (x, ratio) => {
+        return x * ratio;
+    };
 
-const cleanObject = obj => Object.keys(obj).forEach(key => obj[key] === undefined || isNaN(obj[key])? delete obj[key] : '');
+    const cleanObject = obj => Object.keys(obj).forEach(key => obj[key] === undefined || isNaN(obj[key]) ? delete obj[key] : '');
 
 
-const convertVelocityToVirtual = x => convert(x, meterSecToPixelFrame);
-const convertLongitudeToVirtual = x => convert(x, meterToPixel);
-const convertFrictionToVirtual = x => convert(x, frictionConstToVirtualConst);
-const convertAccToVirtual = x => convert(x, meterSecSqToPixelFrameSq);
-const convertMassToVirtual = x => convert(x, kgToVirtualMass);
-const convertSpringConstToVirtual = x => convert(x, constSpringToVirtualConst);
-const convertEnergyToVirtual = x => convert(x, jouleToVirtualJoule);
+    self.convertVelocityToVirtual = x => convert(x, meterSecToPixelFrame);
+    self.convertLongitudeToVirtual = x => convert(x, meterToPixel);
+    self.convertFrictionToVirtual = x => convert(x, frictionConstToVirtualConst);
+    self.convertAccToVirtual = x => convert(x, meterSecSqToPixelFrameSq);
+    self.convertMassToVirtual = x => convert(x, kgToVirtualMass);
+    self.convertSpringConstToVirtual = x => convert(x, constSpringToVirtualConst);
+    self.convertEnergyToVirtual = x => convert(x, jouleToVirtualJoule);
 
-const convertVelocityToReal = x => convert(x, meterSecToPixelFrame);
-const convertLongitudeToReal = x => convert(x, pixelToMeter);
-const convertFrictionToReal = x => convert(x, virtualConstToFrictionConst);
-const convertAccToReal = x => convert(x, pixelFrameSqToMeterSecSq);
-const convertMassToReal = x => convert(x, virtualMassToKg);
-const convertSpringConstToReal = x => convert(x, virtualConstToConstSpring);
-const convertEnergyToReal = x => convert(x, virtualJouleToJoule);
+    self.convertVelocityToReal = x => convert(x, pixelFrameToMeterSec);
+    self.convertLongitudeToReal = x => convert(x, pixelToMeter);
+    self.convertFrictionToReal = x => convert(x, virtualConstToFrictionConst);
+    self.convertAccToReal = x => convert(x, pixelFrameSqToMeterSecSq);
+    self.convertMassToReal = x => convert(x, virtualMassToKg);
+    self.convertSpringConstToReal = x => convert(x, virtualConstToConstSpring);
+    self.convertEnergyToReal = x => convert(x, virtualJouleToJoule);
+
+    return self;
+}());

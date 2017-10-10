@@ -13,6 +13,7 @@ function setup() {
     let canvasDivId = "canvasDiv";
     let chartsDivId = "chartsDiv";
     let rightMenuDiv;
+    console.log(UnitConverter);
 
     charts = [];
     exercise = new Exercise({middlePathLength: 100, friction: 0.7}, stopCharts);
@@ -65,7 +66,7 @@ function setup() {
 function draw() {
     background(255);
     exercise.run(width, height * (3/4));
-    const energies = energiesConvertToReal({
+    const energies = UnitConverter.energiesConvertToReal({
         kinetic: exercise.energy.getKinetic(),
         potential: exercise.energy.getPotential(),
         elastic: exercise.energy.getElastic(),
@@ -76,16 +77,16 @@ function draw() {
         energies.elastic, energies.current, energies.initial);
     varRightMenu.getElementInfo(0);
     if(exercise.update) {
-        charts[0].addData(convertLongitudeToReal(exercise.body.position.x));
-        charts[1].addData(convertVelocityToReal(exercise.energy.velocity));
-        charts[2].addData(convertLongitudeToReal(exercise.energy.height));
-        charts[3].addData(convertLongitudeToReal(exercise.energy.height));
+        charts[0].addData(UnitConverter.convertLongitudeToReal(exercise.body.position.x));
+        charts[1].addData(UnitConverter.convertVelocityToReal(exercise.energy.velocity));
+        charts[2].addData(UnitConverter.convertLongitudeToReal(exercise.energy.height));
+        charts[3].addData(UnitConverter.convertLongitudeToReal(exercise.energy.height));
     }
     text(frameRate().toFixed(0), 1010, 575);
 }
 
 function changeExc(variables){
-    exercise = new Exercise(initVarsConvertToVirtual(variables), stopCharts);
+    exercise = new Exercise(UnitConverter.initVarsConvertToVirtual(variables), stopCharts);
     charts.forEach(c => c.resetChart());
 }
 
