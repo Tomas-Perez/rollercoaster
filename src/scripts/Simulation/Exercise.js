@@ -1,12 +1,11 @@
-const Exercise = function(options = {}, cycleFinishedCallback){
-    console.log(options);
+const Exercise = function(variables = {}, cycleFinishedCallback){
+    console.log(variables);
     const defaults = {
         rampHeightLeft: 500,
         middlePathLength: 0,
         friction: 0,
         rampHeightRight: 500,
         radius: 0,
-        rampColor: '#795548',
         gravity: 10/36, //if(1 pixel == 1cm) 1 == 36 m/s^2
         springConst: 0,
         velocity: 0,
@@ -14,33 +13,34 @@ const Exercise = function(options = {}, cycleFinishedCallback){
         mass: 50,
     };
 
-    const actualOptions = Object.assign({}, defaults, options);
-    console.log(actualOptions);
+    this.variables = Object.assign({}, defaults, variables);
+
+    console.log(this.variables);
     const img = loadImage('./assets/cartDemo.png');
-    const gravity = actualOptions.gravity;
+    const gravity = this.variables.gravity;
 
     this.update = true;
     this.finished = false;
 
     this.ramp = new Ramp(
-        actualOptions.rampHeightLeft,
-        actualOptions.middlePathLength,
-        actualOptions.friction,
-        actualOptions.rampHeightRight,
-        actualOptions.radius,
-        actualOptions.rampColor
+        this.variables.rampHeightLeft,
+        this.variables.middlePathLength,
+        this.variables.friction,
+        this.variables.rampHeightRight,
+        this.variables.radius,
+        '#795548'
     );
-    this.body = new Body(new p5.Vector(0,0), actualOptions.mass);
+    this.body = new Body(new p5.Vector(0,0), this.variables.mass);
     this.railGuide = new RailGuide(this.body, this.ramp.vertices);
     this.cart = new CartDrawing(this.body, img);
     const cartHeight = this.ramp.lowestPoint - this.body.position.y;
     this.energy = new Energy(
         this.body.mass,
         gravity,
-        actualOptions.springConst,
+        this.variables.springConst,
         cartHeight,
-        actualOptions.velocity,
-        actualOptions.springLength
+        this.variables.velocity,
+        this.variables.springLength
     );
 
     this.body.acceleration = new p5.Vector(0, gravity);

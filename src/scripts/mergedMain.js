@@ -110,3 +110,7 @@ function pause(){
 function stopCharts(){
     charts.forEach(chart => chart.done());
 }
+
+function getExcVariables(){
+    return UnitConverter.initVarsConvertToReal(exercise.variables);
+}
