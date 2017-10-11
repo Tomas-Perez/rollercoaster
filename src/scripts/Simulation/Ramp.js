@@ -21,7 +21,8 @@ const Ramp = function(leftHeight, middleLength, friction, rightHeight, radius, c
     }
     let startPath = 'M0 ' + rampHeightLeftPath + ' Q0 0 ' + startRampWidth + ' 0';
     let middlePath = 'M' + startRampWidth + ' 0 h' + middleLength + startLoop;
-    let endPath = endLoop + 'M' + middlePathEnd + ' 0 Q' + endRampCorner + ' 0 ' + endRampCorner + rampHeightRightPath;
+    let endPath = endLoop + 'M' + middlePathEnd + ' 0 Q' + endRampCorner + ' 0 ' + endRampCorner + ' ' + rampHeightRightPath;
+    console.log(endPath);
     const paths = [startPath, middlePath, loopTop, endPath];
     for(let i = 0; i < paths.length; i++) {
         let pathLength = Raphael.getTotalLength(paths[i]);

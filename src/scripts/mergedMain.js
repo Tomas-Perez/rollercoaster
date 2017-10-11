@@ -16,7 +16,7 @@ function setup() {
     console.log(UnitConverter);
 
     charts = [];
-    exercise = new Exercise({middlePathLength: 100, friction: 0.7}, stopCharts);
+    exercise = new Exercise({rampHeightRight: 0, middlePathLength: 100}, stopCharts);
 
     //container formatting
     let container = document.getElementById(containerDivId);

@@ -13,11 +13,15 @@ const gravity = 10/36; //if(1 pixel == 1cm) 1 == 36 m/s^2
 
 let exercise;
 let backgroundImg;
-let spring;
+let spring1;
+let spring2;
+let x = 500;
+let y = 250;
 
 function setup(){
     createCanvas(1024, 576);
-    spring = new Spring(500, 250, 100, 25);
+    spring1 = new Spring(x, y, 100, 25, false);
+    spring2 = new Spring(x, y, 100, 25, true);
     let whatever;
     console.log(whatever || 500);
     whatever = 0;
@@ -29,8 +33,11 @@ function setup(){
 
 function draw(){
     background(255);
-    spring.compress({x: mouseX, y: mouseY, width: 1, height: 1});
-    spring.display();
+    spring1.compress({x: mouseX, y: mouseY, width: 1, height: 1});
+    spring1.display();
+    spring2.compress({x: mouseX, y: mouseY, width: 1, height: 1});
+    spring2.display();
+    ellipse(x, y, 5);
 
     /*
     scale(1);

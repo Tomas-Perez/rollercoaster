@@ -42,6 +42,14 @@ RailGuide.prototype.getTrajectory = function(){
     return p5.Vector.sub(to, from);
 };
 
+RailGuide.prototype.getStart = function(){
+    return this.railVertices[0];
+};
+
+RailGuide.prototype.getEnd = function(){
+    return this.railVertices[this.railVertices.length - 1];
+};
+
 /*
 RailGuide.prototype.getTargetVector = function(){
     return p5.Vector.sub(this.railVertices[this.target], this.body.position);

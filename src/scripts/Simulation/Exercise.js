@@ -10,6 +10,8 @@ const Exercise = function(variables = {}, cycleFinishedCallback){
         springConst: 0,
         velocity: 0,
         springLength: 0,
+        startSpring: false,
+        endSpring: false,
         mass: 50,
     };
 
@@ -49,6 +51,15 @@ const Exercise = function(variables = {}, cycleFinishedCallback){
     this.body.updateListeners.push(this.updateBodyVelocity.bind(this));
     this.cycleFinishedListener = cycleFinishedCallback;
     this.body.startListeners.push(this.cycleFinishedListener);
+    this.springs = [];
+    if(actualOptions.startSpring){
+        const start = this.railGuide.getStart();
+        this.springs.push(new Spring(start.x, start.y, 100, 50));
+    }
+    if(actualOptions.endSpring){
+        const end = this.railGuide.getEnd();
+        this.springs.push(new Spring(end.x, end.y, 100, 50, false));
+    }
 };
 
 Exercise.prototype = {
@@ -71,8 +82,11 @@ Exercise.prototype = {
                 this.finished = true;
             }
         }
-        this.cart.display(this.body.position.x, this.body.position.y, this.railGuide.getTrajectory());
-        //this.body.display();
+        const bbox = this.cart.display(this.body.position.x, this.body.position.y, this.railGuide.getTrajectory());
+        this.springs.forEach(spring => {
+            spring.compress(bbox);
+            spring.display();
+        });
         pop();
     },
 
