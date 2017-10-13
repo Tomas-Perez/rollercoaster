@@ -11,7 +11,7 @@ const UnitConverter = (function () {
     const meterSecToPixelFrame = 1 / 6;
     const meterSecSqToPixelFrameSq = 1 / 36;
     const kgToVirtualMass = 1;
-    const constSpringToVirtualConst = 1;
+    const constSpringToVirtualConst = 1 / 36;
     const frictionConstToVirtualConst = 1;
     const jouleToVirtualJoule = 1 / 6;
 

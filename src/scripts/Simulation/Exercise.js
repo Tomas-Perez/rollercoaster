@@ -51,14 +51,13 @@ const Exercise = function(variables = {}, cycleFinishedCallback){
     this.body.updateListeners.push(this.updateBodyVelocity.bind(this));
     this.cycleFinishedListener = cycleFinishedCallback;
     this.body.startListeners.push(this.cycleFinishedListener);
-    this.springs = [];
-    if(actualOptions.startSpring){
+    if(this.variables.startSpring){
         const start = this.railGuide.getStart();
-        this.springs.push(new Spring(start.x, start.y, 100, 50));
+        this.spring = new Spring(start.x, start.y, 100, 50);
     }
-    if(actualOptions.endSpring){
+    else if(this.variables.endSpring){
         const end = this.railGuide.getEnd();
-        this.springs.push(new Spring(end.x, end.y, 100, 50, false));
+        this.spring = new Spring(end.x, end.y, 100, 50, false);
     }
 };
 
@@ -83,10 +82,11 @@ Exercise.prototype = {
             }
         }
         const bbox = this.cart.display(this.body.position.x, this.body.position.y, this.railGuide.getTrajectory());
-        this.springs.forEach(spring => {
-            spring.compress(bbox);
-            spring.display();
-        });
+        if(this.spring){
+          this.spring.compress(bbox);
+          this.spring.display();
+        }
+
         pop();
     },
 
@@ -103,7 +103,7 @@ Exercise.prototype = {
     },
 
     updateBodyVelocity: function () {
-        this.body.velocity = this.energy.updateVelocity(this.ramp.lowestPoint - this.body.position.y, 0);
+        this.body.velocity = this.energy.updateVelocity(this.ramp.lowestPoint - this.body.position.y, this.spring.getDeltaLength());
         this.body.position.y = this.ramp.lowestPoint - this.energy.height;
         if (this.energy.stuck) this.railGuide.chooseTarget();
     },

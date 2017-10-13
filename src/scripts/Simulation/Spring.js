@@ -57,3 +57,7 @@ Spring.prototype.display = function(){
     endShape();
     pop();
 };
+
+Spring.prototype.getDeltaLength = function(){
+    return this.maxWidth - this.currentWidth;
+};

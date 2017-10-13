@@ -16,7 +16,7 @@ function setup() {
     console.log(UnitConverter);
 
     charts = [];
-    exercise = new Exercise({rampHeightRight: 0, middlePathLength: 100}, stopCharts);
+    exercise = new Exercise({rampHeightRight: 0, middlePathLength: 100, endSpring: true, springConst: 1}, stopCharts);
 
     //container formatting
     let container = document.getElementById(containerDivId);
