@@ -16,7 +16,7 @@ function setup() {
     console.log(UnitConverter);
 
     charts = [];
-    exercise = new Exercise({rampHeightRight: 0, middlePathLength: 100, endSpring: true, springConst: 1}, stopCharts);
+    exercise = new Exercise({middlePathLength: 100, radius: 100}, stopCharts);
 
     //container formatting
     let container = document.getElementById(containerDivId);
@@ -50,16 +50,17 @@ function setup() {
 
     varRightMenu = new RightMenu(canvas.width*1/4, canvas.height,"varRightMenu", "rightMenu", "rightMenuDiv", "Variables", true);
 
-    varRightMenu.addContent(new Variable("Mass", "m", varRightMenu.width, varRightMenu.height, varRightMenu.contentDivId, 0));
-    varRightMenu.addContent(new Variable("Gravity", "m", varRightMenu.width, varRightMenu.height, varRightMenu.contentDivId, 1));
-    varRightMenu.addContent(new Variable("Velocity", "m", varRightMenu.width, varRightMenu.height, varRightMenu.contentDivId, 2));
-    varRightMenu.addContent(new Variable("Friction", "m", varRightMenu.width, varRightMenu.height, varRightMenu.contentDivId, 3));
-    varRightMenu.addContent(new Variable("Spring K", "m", varRightMenu.width, varRightMenu.height, varRightMenu.contentDivId, 4));
-    varRightMenu.addContent(new Variable("Spring length", "m", varRightMenu.width, varRightMenu.height, varRightMenu.contentDivId, 5));
-    varRightMenu.addContent(new Variable("Radius", "m", varRightMenu.width, varRightMenu.height, varRightMenu.contentDivId, 6));
-    varRightMenu.addContent(new Variable("Middle path", "m", varRightMenu.width, varRightMenu.height, varRightMenu.contentDivId, 7));
-    varRightMenu.addContent(new Variable("Ramp l-height", "m", varRightMenu.width, varRightMenu.height, varRightMenu.contentDivId, 8));
-    varRightMenu.addContent(new Variable("Ramp r-height", "m", varRightMenu.width, varRightMenu.height, varRightMenu.contentDivId, 9));
+    const realVars = UnitConverter.initVarsConvertToReal(exercise.variables);
+    varRightMenu.addContent(new Variable("Mass", "m", varRightMenu.width, varRightMenu.height, varRightMenu.contentDivId, 0, realVars.mass));
+    varRightMenu.addContent(new Variable("Gravity", "m/s^2", varRightMenu.width, varRightMenu.height, varRightMenu.contentDivId, 1, realVars.gravity));
+    varRightMenu.addContent(new Variable("Velocity", "m/s", varRightMenu.width, varRightMenu.height, varRightMenu.contentDivId, 2, realVars.velocity));
+    varRightMenu.addContent(new Variable("Friction", "", varRightMenu.width, varRightMenu.height, varRightMenu.contentDivId, 3, realVars.friction));
+    varRightMenu.addContent(new Variable("Spring K", "kg/s^2", varRightMenu.width, varRightMenu.height, varRightMenu.contentDivId, 4, realVars.springConst));
+    varRightMenu.addContent(new Variable("Spring length", "m", varRightMenu.width, varRightMenu.height, varRightMenu.contentDivId, 5, realVars.springLength));
+    varRightMenu.addContent(new Variable("Radius", "m", varRightMenu.width, varRightMenu.height, varRightMenu.contentDivId, 6, realVars.radius));
+    varRightMenu.addContent(new Variable("Middle path", "m", varRightMenu.width, varRightMenu.height, varRightMenu.contentDivId, 7, realVars.middlePathLength));
+    varRightMenu.addContent(new Variable("Ramp l-height", "m", varRightMenu.width, varRightMenu.height, varRightMenu.contentDivId, 8, realVars.rampHeightLeft));
+    varRightMenu.addContent(new Variable("Ramp r-height", "m", varRightMenu.width, varRightMenu.height, varRightMenu.contentDivId, 9, realVars.rampHeightRight));
 
     expRightMenu = new RightMenu(canvas.width*1/4, canvas.height, "expRightMenu", "rightMenu", "rightMenuDiv", "Experiences", false);
     expRightMenu.addContent(new ExpThumbnail(expRightMenu.width, 70, expRightMenu.height, "./assets/ramp_button_1.jpg", expRightMenu.contentDivId, 0, function(){ return toggleMenu('varbtn', 'expRightMenu');}));

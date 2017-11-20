@@ -103,7 +103,7 @@ Exercise.prototype = {
     },
 
     updateBodyVelocity: function () {
-        this.body.velocity = this.energy.updateVelocity(this.ramp.lowestPoint - this.body.position.y, this.spring.getDeltaLength());
+        this.body.velocity = this.energy.updateVelocity(this.ramp.lowestPoint - this.body.position.y, this.spring? this.spring.getDeltaLength() : 0);
         this.body.position.y = this.ramp.lowestPoint - this.energy.height;
         if (this.energy.stuck) this.railGuide.chooseTarget();
     },
